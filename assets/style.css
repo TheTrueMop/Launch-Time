@@ -1,9 +1,42 @@
+:root {
+  --primary-color: #062c43;
+  --secondary-color: #054569;
+  --primary-text-color: white;
+  --secondary-text-color: #ced7e0;
+}
+
+body {
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  height: 100vh;
+  color: var(--primary-text-color);
+  background-position: center center;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+nav {
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
+}
+
+.nav-logo {
+  text-align: center;
+}
+.nav-save {
+  text-align: center;
+}
+
+.main-content {
+  margin-top: 40px;
+  background-color: var(--primary-color);
+}
+
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .shipImages {
-height: 50px;
-width: 50px;
-border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 }
