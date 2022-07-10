@@ -1,125 +1,58 @@
-// Weather API Endpoints
-// There are four web service endpoints available:
+// Get local storage items if they exist, and if not - create an empty array
+if (localStorage.getItem("savedMissions") !== null) {
+  // alert("!");
+  var getLocalStorageMissions = localStorage.getItem("savedMissions");
+  console.log(typeof getLocalStorageMissions);
+  var savedMissions = getLocalStorageMissions.split(",");
+  console.log(savedMissions);
+} else {
+  var savedMissions = [];
+}
+// ------------------------------
 
-// /timeline – provides continuous weather data from historical observations, weather forecast and future statistical forecast based on previous conditions.
-// /forecast – provides access to up to 15-days of weather forecast information
-// /history – provides access to hourly and daily historical weather records
-// /historysummary – provides access to historical weather reports and processed information
-
-// var weatherBaseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/";
-var today = moment().format();
-
-// console.log(today);
-
-var savedMissions = [];
-
-var weatherAppid = "&key=X2BCVEUMVC22RSDXLPE88U4YL";
-
+// MATERIALIZE Initiators
 var siteTabs = document.querySelector(".tabs");
 var tabsInstance = M.Tabs.init(siteTabs, {});
 
 var elems = document.querySelectorAll(".sidenav");
 var instances = M.Sidenav.init(elems, {});
+// -----------------------
 
-var lat;
-var long;
+
+// Global Variables from LAUNCH API
+// var lat;
+// var long;
 var description;
-
 var launchDayTemp;
-var launchDate = "2022-07-01";
-
+var launchDate;
 var missions;
 var missionsArray = [];
-
 var futureMissions;
+var datesArray = [];
+// -------------------
+
+// LAUNCH API BASE URLS
 var previousLaunchRequestURL =
   "https://lldev.thespacedevs.com/2.2.0/launch/previous/";
 var futureLaunchRequestURL =
-  "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/";
+  "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=200";
+// --------------------------
 
-// function getPreviousLaunches() {
-//   fetch(previousLaunchRequestURL, {
-//     method: "GET", //GET is the default.
-//     credentials: "same-origin", // include, *same-origin, omit
-//     redirect: "follow", // manual, *follow, error
-//   })
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       missionsArray.push(JSON.stringify(data));
-//       missions = JSON.parse(missionsArray);
-//       console.log(missions);
+// GET FUTURE LAUNCHES FROM LAUNCH API
+var dataID;
 
-//       for (let i = 0; i < 8; i++) {
-//         // CARD CONTAINER
-//         var column = document.createElement("div");
-//         column.classList.add("col");
-//         column.classList.add("s12");
-//         column.classList.add("m6");
-//         // CARD DIV
-//         var card = document.createElement("div");
-//         card.classList.add("card");
-//         card.classList.add("agencyImage");
-//         // CARD IMAGE DIV
-//         var cardImage = document.createElement("div");
-//         cardImage.classList.add("card-image");
-//         // CARD IMG TAG
-//         var cardImageURL = document.createElement("img");
-//         cardImageURL.src = missions.results[i].image;
-//         // CREATE CARD TITLE SPAN
-//         var cardTitleSpan = document.createElement("span");
-//         cardTitleSpan.classList.add("card-title");
-//         // CREATE TEXT NODE FOR CARD TITLE
-//         var cardTitleTextNode = document.createTextNode(
-//           missions.results[i].name
-//         );
+function storeUniqueDataID() {
+  if (savedMissions.indexOf(dataID) > -1) {
+    console.log("This mission already saved.");
 
-//         // CREATE ICON ahref AREA
-//         var cardTitleSpanLink = document.createElement("a");
-//         cardTitleSpanLink.classList.add("btn-floating");
-//         cardTitleSpanLink.classList.add("halfway-fab");
-//         cardTitleSpanLink.classList.add("waves-effect");
-//         cardTitleSpanLink.classList.add("waves-light");
-//         cardTitleSpanLink.classList.add("red");
-
-//         var addFavoriteIcon = document.createElement("i");
-//         addFavoriteIcon.classList.add("material-icons");
-//         var addFavoriteIconTextNode = document.createTextNode("add");
-//         addFavoriteIcon.appendChild(addFavoriteIconTextNode);
-
-//         // CREATE CARD CONTENT DIV
-//         var cardContentDiv = document.createElement("div");
-//         cardContentDiv.classList.add("card-content");
-//         var cardContentDivTextNode = document.createTextNode(
-//           missions.results[i].mission.description
-//         );
-//         cardContentDiv.appendChild(cardContentDivTextNode);
-
-//         // add CARD DIV to CARD COLUMN DIV
-//         column.appendChild(card);
-//         // add IMG DIV
-//         card.appendChild(cardImage);
-//         // add IMG TAG
-//         cardImage.appendChild(cardImageURL);
-//         // APPEND CARD TITLE
-//         cardImage.appendChild(cardTitleSpan);
-
-//         cardTitleSpan.appendChild(cardTitleTextNode);
-//         // // append a icon div
-//         // cardImage.appendChild(cardTitleSpanLink);
-//         // // append text to trigger icon to i element
-//         cardTitleSpanLink.appendChild(addFavoriteIcon);
-//         // append card content div to CARD
-//         card.appendChild(cardContentDiv);
-
-//         // ADD TO DOM SECTION
-//         document.getElementById("lastFiveLaunchesList").append(column);
-//       }
-//     });
-// // }
-// getPreviousLaunches();
-
+  } else {
+    savedMissions.push(dataID);
+    console.log(savedMissions);
+    addFavoriteToList();
+    localStorage.setItem("savedMissions", savedMissions);
+    console.log('ID SAVED FROM FUTURE LAUNCHES');
+  }
+}
 function getFutureLaunches() {
   fetch(futureLaunchRequestURL, {
     method: "GET", //GET is the default.
@@ -130,16 +63,17 @@ function getFutureLaunches() {
       return response.json();
     })
     .then(function (data) {
-      console.log("Future:");
-      console.log(data);
       futureMissions = data;
-      for (let i = 0; i < 8; i++) {
+      console.log(futureMissions);
+
+      for (let i = 0; i < 6; i++) {
+        console.log(futureMissions.results[i].window_start);
         // CARD CONTAINER
         var column = document.createElement("div");
-
         column.classList.add("col");
-        column.classList.add("s3");
-        column.classList.add("m3");
+        column.classList.add("m4");
+        column.classList.add("s12");
+        column.classList.add("cardBoxes");
         // CARD DIV
         var card = document.createElement("div");
         card.classList.add("card");
@@ -149,6 +83,7 @@ function getFutureLaunches() {
         cardImage.classList.add("card-image");
         // CARD IMG TAG
         var cardImageURL = document.createElement("img");
+
         cardImageURL.src = futureMissions.results[i].image;
         // CREATE CARD TITLE SPAN
         var cardTitleSpan = document.createElement("span");
@@ -176,15 +111,32 @@ function getFutureLaunches() {
         var cardContentDiv = document.createElement("div");
         cardContentDiv.classList.add("card-content");
         var cardContentDivTextNode = document.createTextNode(
-          futureMissions.results[i].pad.location.name
+          futureMissions.results[i].window_start
         );
         cardContentDiv.appendChild(cardContentDivTextNode);
-        //var cardContentDivTextNode = document.createTextNode(
-        //  futureMissions.results[i].mission.description
-        //);
-        //cardContentDiv.appendChild(cardContentDivTextNode);
 
-        // add CARD DIV to CARD COLUMN DIV
+        // CREATE CARD CONTENT EXPANSION
+        var cardReveal = document.createElement('div');
+        cardReveal.classList.add("card-reveal");
+
+        var cardRevealSpan = document.createElement('span');
+        cardRevealSpan.classList.add("card-title");
+        cardReveal.appendChild(cardRevealSpan);
+
+        var cardRevealExitIcon = document.createElement('i');
+        cardRevealExitIcon.classList.add('material-icons');
+        cardRevealExitIcon.classList.add('right');
+        cardRevealSpan.append(cardRevealExitIcon);
+
+        // var closeIcon = document.createTextNode('close');
+        cardRevealExitIcon.textContent = "close";
+        // cardRevealSpanP.appendChild(closeIcon);
+
+        var cardRevealSpanP = document.createElement('p');
+        cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+        cardReveal.appendChild(cardRevealSpanP);
+
+        // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
         column.appendChild(card);
         // add IMG DIV
         card.appendChild(cardImage);
@@ -203,54 +155,37 @@ function getFutureLaunches() {
           futureMissions.results[i].id
         );
 
+        // CLICK HANDLER!!!!!!!!!!!!!!!!!!
         addFavoriteIcon.addEventListener("click", function () {
           // alert(this.getAttribute('data-launch-id'));
-
-          var dataID = this.getAttribute("data-launch-id");
-          console.log(dataID);
-
-          function storeUniqueDataID() {
-            if (savedMissions.indexOf(dataID) > -1) {
-              console.log("This mission already saved.");
-            } else {
-              savedMissions.push(dataID);
-              console.log(savedMissions);
-              addFavoriteToList();
-            }
+          dataID = this.getAttribute("data-launch-id");
+          // console.log(dataID);
+          if (this.textContent == "add") {
+            this.textContent = "remove";
+            storeUniqueDataID();
+          } else {
+            this.textContent = "add";
+            savedMissions.splice(savedMissions.indexOf(dataID), 1);
+            console.log(savedMissions);
+            localStorage.setItem("savedMissions", savedMissions);
           }
-          storeUniqueDataID();
         });
-
         // append card content div to CARD
         card.appendChild(cardContentDiv);
-
+        cardContentDiv.classList.add('activator');
+        card.appendChild(cardReveal);
         var timerDiv = document.createElement("div");
         timerDiv.classList.add("timer-div");
         card.appendChild(timerDiv);
 
+        // ADD TO DOM SECTION
         document.getElementById("nextFiveLaunchesList").append(column);
       }
     });
+
 }
 getFutureLaunches();
-
-// function weatherForecast() {
-//   var weatherBaseURL = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat}%2C%20${long}/${launchDate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
-//   fetch(weatherBaseURL, {
-//     method: "GET", //GET is the default.
-//     credentials: "same-origin", // include, *same-origin, omit
-//     redirect: "follow", // manual, *follow, error
-//   })
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       var theWeather = data;
-//       launchDayTemp = data.days[0].temp;
-//       console.log("Weather:");
-//       console.log(launchDayTemp);
-//     });
-// }
+// ----------------------------------
 
 const missionTimerInterval = setInterval(missionTimer, 1000);
 
@@ -270,16 +205,19 @@ function missionTimer() {
 }
 
 function addFavoriteToList() {
-  document.getElementById("test3").innerHTML = "";
+  var favoriteButtons = document.querySelectorAll(".favoriteButtons");
+  var clearFuture = document.querySelector(".clearFuture");
+  clearFuture.replaceChildren();
 
   for (i = 0; i < futureMissions.results.length; i++) {
-    var mission = futureMissions.results[i];
-    if (savedMissions.indexOf(mission.id) !== -1) {
-      // CARD CONTAINER
+
+    if (savedMissions.includes(futureMissions.results[i].id)) {
+
       var column = document.createElement("div");
       column.classList.add("col");
-      column.classList.add("s3");
-      column.classList.add("m3");
+      column.classList.add("s12");
+      column.classList.add("m4");
+
       // CARD DIV
       var card = document.createElement("div");
       card.classList.add("card");
@@ -298,7 +236,7 @@ function addFavoriteToList() {
         futureMissions.results[i].name
       );
 
-      // CREATE ICON ahref AREA
+      // CREATE MATERIALIZE ICON ahref AREA
       var cardTitleSpanLink = document.createElement("a");
       cardTitleSpanLink.classList.add("btn-floating");
       cardTitleSpanLink.classList.add("halfway-fab");
@@ -306,6 +244,7 @@ function addFavoriteToList() {
       cardTitleSpanLink.classList.add("waves-light");
       cardTitleSpanLink.classList.add("red");
 
+      // CREATE MATERIALIZE ICON AREA
       var addFavoriteIcon = document.createElement("i");
       addFavoriteIcon.classList.add("material-icons");
       addFavoriteIcon.classList.add("favoriteButtons");
@@ -316,7 +255,7 @@ function addFavoriteToList() {
       var cardContentDiv = document.createElement("div");
       cardContentDiv.classList.add("card-content");
       var cardContentDivTextNode = document.createTextNode(
-        futureMissions.results[i].mission.description
+        futureMissions.results[i].window_start
       );
       cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -342,15 +281,52 @@ function addFavoriteToList() {
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
+      // CREATE DIV FOR TIME IN CARD
       var timerDiv = document.createElement("div");
       timerDiv.classList.add("timer-div");
       card.appendChild(timerDiv);
 
+
+      var futureMissionDate = futureMissions.results[i].window_start.split('T')[0];
+
+      launchDate = futureMissionDate;
+      console.log("start: " + launchDate);
+      // datesArray.push(launchDate);
+      // console.log(datesArray);
+
+
+      // var weatherForecastTempDiv = document.createElement("div");
+      // // weatherForecast.classList.add('weatherDiv');
+      // var weatherForecastTempDivTextNode = document.createTextNode(launchDayTemp);
+      // weatherForecastTempDiv.appendChild(weatherForecastTempDivTextNode);
+      // card.appendChild(weatherForecastTempDiv);
+
+
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
+
+    } else {
     }
   }
 }
+setTimeout(addFavoriteToList, 3000);
+
+
+// Dustin's Code ABOVE this line---------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Itzel's Code BELOW this line -----------------------------------------------------------------------
 
 // Search Launches
 function displayLaunches(response) {
