@@ -11,7 +11,17 @@ var today = moment().format();
 
 // console.log(today);
 
-var savedMissions = [];
+// Get local storage items if they exist, and if not - create an empty array
+if (localStorage.getItem("savedMissions") !== null) {
+  alert("!");
+  var getLocalStorageMissions = localStorage.getItem("savedMissions");
+  console.log(typeof getLocalStorageMissions);
+  var savedMissions = getLocalStorageMissions.split(",");
+  console.log(savedMissions);
+} else {
+  var savedMissions = [];
+}
+// ------------------------------
 
 var weatherAppid = "&key=X2BCVEUMVC22RSDXLPE88U4YL";
 
