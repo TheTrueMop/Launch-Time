@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 :root {
   --primary-color: #062c43;
   --secondary-color: #054569;
@@ -6,37 +11,120 @@
 }
 
 body {
+  height: 100vh;
+  width: 100%;
   background-image: url("../images/background.jpg");
   background-size: cover;
-  height: 100vh;
-  color: var(--primary-text-color);
   background-position: center center;
+  color: var(--primary-text-color);
   font-family: "Raleway", sans-serif;
 }
 
-nav {
-  background-color: var(--primary-color);
-  color: var(--secondary-text-color);
+header {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
-.nav-logo {
-  text-align: center;
+.tabs .tab a {
+  color: white;
 }
-.nav-save {
-  text-align: center;
+.tabs .indicator {
+  background-color: var(--primary-text-color) !important;
 }
 
-.main-content {
-  margin-top: 40px;
+.tabs .tab a:hover,
+.tabs .tab a.active {
+  background-color: var(--secondary-text-color) !important;
+
+  color: var(--primary-color) !important;
+}
+a {
   background-color: var(--primary-color);
+  color: white;
 }
 
 ul {
   list-style-type: none;
 }
 
-.shipImages {
-  height: 50px;
-  width: 50px;
+.findBtn {
+  background-color: var(--secondary-color);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.customCard {
+  border-bottom: 1px solid var(--secondary-text-color);
+}
+
+.sidenav {
+  padding: 25px !important;
+}
+input {
+  font-family: "Raleway", sans-serif;
+  width: 60%;
+}
+.date-inputs div {
+  color: var(--primary-color);
+  text-align: center;
+}
+.btn {
+  background-color: var(--primary-color);
+}
+
+.sidenav li > a.btn:hover {
+  background-color: var(--secondary-color);
+}
+
+#nextFiveLaunchesList li,
+#lastFiveLaunchesList li {
+  margin-bottom: 10px;
+  color: green;
+}
+
+#nextFiveLaunchesList,
+#lastFiveLaunchesList {
+  margin-bottom: 10px;
+}
+
+.agencyImg {
+  border-radius: 20px;
+  width: 200px;
+  height: 120px;
+}
+.saveBtn {
+  background-color: red;
   border-radius: 50%;
+  padding: 12px 5px 3px 5px;
+}
+/* .shipImages {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 1px solid white;
+} */
+
+.agencyImage img {
+  max-height: 170px;
+  min-height: 170px;
+  /* max-width: 170px;
+min-width: 170px; */
+}
+
+.agencyImage {
+  background-color: black !important;
+  opacity: 0.8;
+}
+
+.card .card-image .card-title {
+  font-size: 2vw;
+}
+
+.card-content {
+  color: white;
+}
+
+.timer-div {
+  color: white;
 }
