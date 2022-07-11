@@ -1,5 +1,5 @@
 M.AutoInit();
-var Dinstance = M.Modal.getInstance(document.querySelector('#modal1'));
+var Dinstance = M.Modal.getInstance(document.querySelector("#modal1"));
 // Get local storage items if they exist, and if not - create an empty array
 if (localStorage.getItem("savedMissions") !== null) {
   // alert("!");
@@ -19,7 +19,6 @@ var tabsInstance = M.Tabs.init(siteTabs, {});
 var elems = document.querySelectorAll(".sidenav");
 var instances = M.Sidenav.init(elems, {});
 // -----------------------
-
 
 // Global Variables from LAUNCH API
 // var lat;
@@ -46,12 +45,12 @@ var dataID;
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
     // console.log("This mission already saved.");
-
   } else {
     savedMissions.push(dataID);
     // console.log(savedMissions);
     addFavoriteToList();
     localStorage.setItem("savedMissions", savedMissions);
+    console.log("ID SAVED FROM FUTURE LAUNCHES");
     // console.log('ID SAVED FROM FUTURE LAUNCHES');
   }
 }
@@ -66,9 +65,7 @@ function getFutureLaunches() {
     })
     .then(function (data) {
       futureMissions = data;
-
-
-
+      
       for (let i = 0; i < 6; i++) {
         console.log(futureMissions.results[i].window_start);
         console.log(futureMissions.results[i].launch_service_provider.name);
@@ -120,24 +117,25 @@ function getFutureLaunches() {
         cardContentDiv.appendChild(cardContentDivTextNode);
 
         // CREATE CARD CONTENT EXPANSION
-        var cardReveal = document.createElement('div');
+        var cardReveal = document.createElement("div");
         cardReveal.classList.add("card-reveal");
 
-        var cardRevealSpan = document.createElement('span');
+        var cardRevealSpan = document.createElement("span");
         cardRevealSpan.classList.add("card-title");
         cardReveal.appendChild(cardRevealSpan);
 
-        var cardRevealExitIcon = document.createElement('i');
-        cardRevealExitIcon.classList.add('material-icons');
-        cardRevealExitIcon.classList.add('right');
+        var cardRevealExitIcon = document.createElement("i");
+        cardRevealExitIcon.classList.add("material-icons");
+        cardRevealExitIcon.classList.add("right");
         cardRevealSpan.append(cardRevealExitIcon);
 
         // var closeIcon = document.createTextNode('close');
         cardRevealExitIcon.textContent = "close";
         // cardRevealSpanP.appendChild(closeIcon);
 
-        var cardRevealSpanP = document.createElement('p');
-        cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+        var cardRevealSpanP = document.createElement("p");
+        cardRevealSpanP.textContent =
+          futureMissions.results[i].mission.description;
         cardReveal.appendChild(cardRevealSpanP);
 
         // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
@@ -180,20 +178,22 @@ function getFutureLaunches() {
           var mDescription = futureMissions.results[i].mission.description;
           var mImage = futureMissions.results[i].image;
           // var mWeather =
-          var mTimeDiff = moment(futureMissions.results[i].window_start).fromNow();
+          var mTimeDiff = moment(
+            futureMissions.results[i].window_start
+          ).fromNow();
           document.getElementById("modal-title").innerText = mTitle;
           document.getElementById("modal-desc").innerText = mDescription;
           document.getElementById("modal-img").src = mImage;
           // document.getElementById("modal-weather").textContent = mWeather;
-          document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-          
+          document.getElementById("modal-tMinus").textContent =
+            "T- " + mTimeDiff;
           Dinstance.open();
         });
         // Dawson End Of Code
 
         // append card content div to CARD
         card.appendChild(cardContentDiv);
-        cardContentDiv.classList.add('activator');
+        cardContentDiv.classList.add("activator");
         card.appendChild(cardReveal);
         var timerDiv = document.createElement("div");
         timerDiv.classList.add("timer-div");
@@ -206,8 +206,6 @@ function getFutureLaunches() {
 }
 getFutureLaunches();
 // ----------------------------------
-
-
 
 // Write upcoming missions to the upcoming page
 function writeFutureMissionsToDom() {
@@ -255,7 +253,6 @@ function writeFutureMissionsToDom() {
     if (savedMissions.indexOf(futureMissions.results[i].id) > -1) {
       // console.log("YES: " + futureMissions.results[i].id);
       var addFavoriteIconTextNode = document.createTextNode("remove");
-
     } else {
       // console.log("no: " + futureMissions.results[i].id);
       var addFavoriteIconTextNode = document.createTextNode("add");
@@ -271,26 +268,27 @@ function writeFutureMissionsToDom() {
     cardContentDiv.appendChild(cardContentDivTextNode);
 
     // CREATE CARD CONTENT EXPANSION
-    var cardReveal = document.createElement('div');
+    var cardReveal = document.createElement("div");
     cardReveal.classList.add("card-reveal");
 
-    var cardRevealSpan = document.createElement('span');
+    var cardRevealSpan = document.createElement("span");
     cardRevealSpan.classList.add("card-title");
     cardReveal.appendChild(cardRevealSpan);
 
-    var cardRevealExitIcon = document.createElement('i');
-    cardRevealExitIcon.classList.add('material-icons');
-    cardRevealExitIcon.classList.add('right');
+    var cardRevealExitIcon = document.createElement("i");
+    cardRevealExitIcon.classList.add("material-icons");
+    cardRevealExitIcon.classList.add("right");
     cardRevealSpan.append(cardRevealExitIcon);
 
     // var closeIcon = document.createTextNode('close');
     cardRevealExitIcon.textContent = "close";
     // cardRevealSpanP.appendChild(closeIcon);
 
-    var cardRevealSpanP = document.createElement('p');
+    var cardRevealSpanP = document.createElement("p");
 
     if (futureMissions.results[i].mission) {
-      cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+      cardRevealSpanP.textContent =
+        futureMissions.results[i].mission.description;
     }
 
     cardReveal.appendChild(cardRevealSpanP);
@@ -334,7 +332,7 @@ function writeFutureMissionsToDom() {
     //-------------------------------------------
     // append card content div to CARD
     card.appendChild(cardContentDiv);
-    cardContentDiv.classList.add('activator');
+    cardContentDiv.classList.add("activator");
     card.appendChild(cardReveal);
     var timerDiv = document.createElement("div");
     timerDiv.classList.add("timer-div");
@@ -343,7 +341,7 @@ function writeFutureMissionsToDom() {
     // ADD TO DOM SECTION
     document.getElementById("nextFiveLaunchesList").append(column);
 
-    var launchSchedule = futureMissions.results[i].net
+    var launchSchedule = futureMissions.results[i].net;
 
     console.log("launchdate");
     console.log(launchSchedule);
@@ -352,8 +350,6 @@ function writeFutureMissionsToDom() {
     var now = moment(),
       end = moment(launchSchedule),
       millisecondsUntil = end.diff(now);
-
-
 
     seconds = millisecondsUntil / 1000;
     minutes = seconds / 60;
@@ -372,7 +368,16 @@ function writeFutureMissionsToDom() {
     // console.log(today);
     var timerDivReady = document.querySelectorAll(".timer-div");
     timerDivReady.textContent = " ";
-    timerDivReady[i].innerHTML = "Time until launch: " + "D:" + days + " HR:" + hours + " M:" + minutes + " S:" + seconds;
+    timerDivReady[i].innerHTML =
+      "Time until launch: " +
+      "D:" +
+      days +
+      " HR:" +
+      hours +
+      " M:" +
+      minutes +
+      " S:" +
+      seconds;
     // console.log(timerDivReady[i].textContent = "Time until launch: " + "Days: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
 
   }
@@ -384,9 +389,7 @@ function addFavoriteToList() {
   clearFuture.replaceChildren();
 
   for (i = 0; i < futureMissions.results.length; i++) {
-
     if (savedMissions.includes(futureMissions.results[i].id)) {
-
       var column = document.createElement("div");
       column.classList.add("col");
       column.classList.add("s12");
@@ -452,7 +455,6 @@ function addFavoriteToList() {
         futureMissions.results[i].id
       );
 
-
       // CLICK HANDLER!!!!!!!!!!!!!!!!!!
       addFavoriteIcon.addEventListener("click", function () {
         // alert(this.getAttribute('data-launch-id'));
@@ -471,7 +473,6 @@ function addFavoriteToList() {
         }
       });
 
-
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
@@ -480,68 +481,67 @@ function addFavoriteToList() {
       timerDiv.classList.add("timer-div");
       card.appendChild(timerDiv);
 
-
-      var futureMissionDate = futureMissions.results[i].window_start.split('T')[0];
+      var futureMissionDate =
+        futureMissions.results[i].window_start.split("T")[0];
 
       launchDate = futureMissionDate;
       // console.log("start: " + launchDate);
       // datesArray.push(launchDate);
       // console.log(datesArray);
 
-
-
-
+      // var weatherForecastTempDiv = document.createElement("div");
+      // // weatherForecast.classList.add('weatherDiv');
+      // var weatherForecastTempDivTextNode = document.createTextNode(launchDayTemp);
+      // weatherForecastTempDiv.appendChild(weatherForecastTempDivTextNode);
+      // card.appendChild(weatherForecastTempDiv);
 
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
-
     } else {
     }
   }
 }
 setTimeout(addFavoriteToList, 3000);
+
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
-
-
-
-
-
 
 // -----> Search Lauches section (Itzel's)
 
 var startDate = moment();
 var endDate = moment().add(365, "days");
 
-
-
-
-
-
-
-
+// Dustin's Code ABOVE this line---------------------------------------------------------------------
 
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
 
 // Search Launches
 function displayLaunches(response) {
-  var results = response.data.results;
+  var results = response.data.results.filter(function (launch) {
+    return moment(launch.net).isBetween(startDate, endDate);
+  });
   var searchHTML = ``;
-
   for (i = 0; i < Math.min(results.length, 8); i++) {
     searchHTML += launchComponent(results[i]);
   }
-  //searchHTML = searchHTML + `</span>`;
-
   document.querySelector("#searchresults").innerHTML = searchHTML;
-
   var saveLaunchHandler = function (event) {
-    var dataId = event.target.dataset.id;
-    if (savedMissions.indexOf(dataId) == -1) {
+    event.preventDefault();
+    var el = event.target;
+    var dataId = el.dataset.id;
+    var index = savedMissions.indexOf(dataId);
+
+    if (index == -1) {
       savedMissions.push(dataId);
-      addFavoriteToList();
+      el.textContent = "remove";
+    } else {
+      el.textContent = "add";
+      savedMissions.splice(index, 1);
     }
+    localStorage.setItem("savedMissions", savedMissions);
+    addFavoriteToList();
   };
-  var elements = document.querySelectorAll(".search-add-favorite");
+
+  var elements = document.querySelectorAll(".search-add-favorite i");
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener("click", saveLaunchHandler);
   }
@@ -563,27 +563,26 @@ function searchInfo() {
 function launchComponent(launchInfo) {
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
-      <div class="col s3">
+      <div class="col s0 m3">
         <img class="agencyImg" src="${launchInfo.image}" /> 
       </div>
-
-      <div class="col s4">
+      <div class="col s6 m4">
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
           "dddd, MMMM Do YYYY, h:mm:ss a"
         )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
-
       </div>
-      <div class="col s3 customWeather">
+      <div class="col s5 m3 customWeather">
         <p>Weather: <span class="weather"></span></p>
       </div> 
-
-      <div class="col s1 customIcon">
+      <div class="col s1 m1 customIcon">
         <a href="#" class="saveBtn search-add-favorite"><i data-id="${
           launchInfo.id
-        }" class="material-icons">add</i></a>
+        }" class="material-icons">
+        ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
+        </i></a>
       </div>
     </div>`;
   return searchHTML;
@@ -594,7 +593,7 @@ searchInfo();
 
 // Search weather
 
-var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
+// var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
 
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
@@ -611,8 +610,20 @@ var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
 
 //     weatherElement.textContent = response.data.days[0].description;
 //   }
-//   // var apiUrl = `https://api.openweathermap.org/data/3.0/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${futuredate}&appid=${apiKey}`;
 
-//   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
+//   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
 //   axios.get(apiUrl).then(showWeather);
 // }
+
+// Function to filter date
+function handleFilterSearch(event) {
+  event.preventDefault();
+  startDate = moment(document.querySelector("#startDate").value);
+  endDate = moment(document.querySelector("#endDate").value);
+  searchInfo();
+}
+
+// Btn Event listener
+var findLaunch = document.querySelector("#findBtn");
+findLaunch.addEventListener("click", handleFilterSearch);
+

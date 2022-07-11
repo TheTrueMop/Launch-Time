@@ -10,8 +10,8 @@
   --secondary-text-color: #ced7e0;
 }
 
-html { 
-  background: url("../images/background.jpg") no-repeat center center fixed; 
+html {
+  background: url("../images/background.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -82,7 +82,7 @@ input {
   text-align: left;
   background-color: rgb(0, 0, 0, 0.6);
   border-radius: 10px;
-  padding: 12px;
+  padding: 10px;
 }
 .customCard p {
   line-height: 30px;
@@ -142,11 +142,11 @@ min-width: 170px; */
 
 .card-content {
   color: white;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .card .card-reveal {
-background-color: black;
+  background-color: black;
 }
 
 .timer-div {
@@ -162,7 +162,7 @@ background-color: black;
   background-color: var(--secondary-color);
   color: var(--secondary-text-color);
 }
-.modal .modal-footer a{
+.modal .modal-footer a {
   color: var(--secondary-text-color);
 }
 /* Dawson End of CSS*/
@@ -170,14 +170,24 @@ background-color: black;
 /* Media queries */
 
 @media (max-width: 650px) {
-  .findBtn span {
-    display: none;
-  }
   .agencyImg {
     display: none;
   }
   .customCard p {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .customCard {
+    padding-right: 18px;
   }
 }
 
+@media (max-width: 980px) {
+  .findBtn span {
+    display: none;
+  }
+  .findBtn {
+    border-radius: 50%;
+    padding-top: 18px;
+  }
+}
