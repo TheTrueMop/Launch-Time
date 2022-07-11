@@ -152,19 +152,6 @@ min-width: 170px; */
   color: white;
 }
 
-/* ---> Media queries */
-
-@media (max-width: 650px) {
-  .findBtn span {
-    display: none;
-  }
-  .agencyImg {
-    display: none;
-  }
-  .customCard p {
-    font-size: 14px;
-  }
-}
 /* Dawson CSS */
 .modal {
   background-color: var(--primary-color);
@@ -178,3 +165,18 @@ min-width: 170px; */
   color: var(--secondary-text-color);
 }
 /* Dawson End of CSS*/
+
+/* Media queries */
+
+@media (max-width: 650px) {
+  .findBtn span {
+    display: none;
+  }
+  .agencyImg {
+    display: none;
+  }
+  .customCard p {
+    font-size: 14px;
+  }
+}
+
