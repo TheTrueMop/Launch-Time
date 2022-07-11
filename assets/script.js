@@ -173,7 +173,7 @@ function getFutureLaunches() {
           }
         });
         // Dawson added modal sorry if this gets in the way Dustin
-        cardImage.addEventListener("click", function () {
+        cardTitleSpan.addEventListener("click", function () {
           var mTitle = futureMissions.results[i].name;
           var mDescription = futureMissions.results[i].mission.description;
           var mImage = futureMissions.results[i].image;
@@ -183,7 +183,7 @@ function getFutureLaunches() {
           document.getElementById("modal-desc").innerText = mDescription;
           document.getElementById("modal-img").src = mImage;
           // document.getElementById("modal-weather").textContent = mWeather;
-          document.getElementById("modal-tMinus").textContent = "T-: " + mTimeDiff;
+          document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
           
           Dinstance.open();
         });
