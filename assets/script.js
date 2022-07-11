@@ -65,17 +65,17 @@ function getFutureLaunches() {
     redirect: "follow", // manual, *follow, error
   })
     .then(function (response) {
-      alert("1");
+    
       return response.json();
     })
     .then(function (data) {
-      alert("2");
+
       futureMissions = data;
     }).then(function () {
-      alert("3");
+
       writeFutureMissionsToDom();
     }).then(function () {
-      alert("4");
+
       addFavoriteToList();
     });
 }
