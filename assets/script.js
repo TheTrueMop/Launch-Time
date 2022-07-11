@@ -338,6 +338,12 @@ setTimeout(addFavoriteToList, 3000);
 
 
 
+// -----> Search Lauches section (Itzel's)
+
+var startDate = moment();
+var endDate = moment().add(365, "days");
+
+
 
 
 
@@ -387,25 +393,34 @@ function searchInfo() {
 //    htmlText += launchComponent(array[i])
 function launchComponent(launchInfo) {
   var searchHTML = `  
-    <div id="search${launchInfo.id}" class="row customCard">
+    <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
       <div class="col s3">
         <img class="agencyImg" src="${launchInfo.image}" /> 
       </div>
-      <div class="col s5">
-        <p>Company:<span>${launchInfo.launch_service_provider.name}</span></p>
-        <p>Name:<span>${launchInfo.name}</span></p>
-        <p>Date:<span>${launchInfo.net}</span></p>
-        <p>Location:<span>${launchInfo.pad.location.name}</span></p>  
+
+      <div class="col s4">
+        <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
+        <p>Name: <span>${launchInfo.name}</span></p>
+        <p>Date: <span>${moment(launchInfo.net).format(
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
+        <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
+
       </div>
-      <div class="col s3">
-        <p>Weather:<span class="weather"></span></p>
+      <div class="col s3 customWeather">
+        <p>Weather: <span class="weather"></span></p>
       </div> 
-      <div class="col s1">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id}" class="material-icons">add</i></a>
-      </div>  
+
+      <div class="col s1 customIcon">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">add</i></a>
+      </div>
     </div>`;
   return searchHTML;
 }
+
+// Call to show 8 upcoming launches
 searchInfo();
 
 // Search weather
