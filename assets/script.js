@@ -172,7 +172,7 @@ function getFutureLaunches() {
             localStorage.setItem("savedMissions", savedMissions);
           }
         });
-        // Dawson added modal
+        // Dawson added modal sorry if this gets in the way Dustin
         cardImage.addEventListener("click", function () {
           var mTitle = futureMissions.results[i].name;
           var mDescription = futureMissions.results[i].mission.description;
@@ -187,7 +187,7 @@ function getFutureLaunches() {
           
           Dinstance.open();
         });
-        // Dawson added modal
+        // Dawson End Of Code
 
         // append card content div to CARD
         card.appendChild(cardContentDiv);
