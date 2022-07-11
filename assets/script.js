@@ -352,9 +352,15 @@ function addFavoriteToList() {
   }
 }
 
-// Search Launches
+var startDate = moment();
+var endDate = moment().add(365, "days");
+
+// Funtion to search upcoming 8 Launches
 function displayLaunches(response) {
-  var results = response.data.results;
+  var results = response.data.results.filter(function (launch) {
+    return moment(launch.net).isBetween(startDate, endDate);
+  });
+
   var searchHTML = ``;
 
   for (i = 0; i < Math.min(results.length, 8); i++) {
@@ -381,15 +387,13 @@ function displayLaunches(response) {
   }
 }
 
+// Function to search Info inside API with Axios
 function searchInfo() {
   var apiURL = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/";
   axios.get(apiURL).then(displayLaunches);
 }
-//  var searchElement = document.querySelector("#searchresults");
-//  searchElement.innerHTML = searchHTML;
 
-// for ...
-//    htmlText += launchComponent(array[i])
+// Function to display future launches in HTML
 function launchComponent(launchInfo) {
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard">
@@ -399,24 +403,27 @@ function launchComponent(launchInfo) {
       <div class="col s5">
         <p>Company:<span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name:<span>${launchInfo.name}</span></p>
-        <p>Date:<span>${launchInfo.net}</span></p>
+        <p>Date:<span>${moment(launchInfo.net).format(
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
         <p>Location:<span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s3">
         <p>Weather:<span class="weather"></span></p>
       </div> 
       <div class="col s1">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id}" class="material-icons">add</i></a>
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">add</i></a>
       </div>  
     </div>`;
   return searchHTML;
 }
+
+// Temporary call to show data
 searchInfo();
 
-// Search weather
-
-var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
-
+// Function to get Weather
 function getWeather(launchInfo) {
   var date = launchInfo.net;
   var futuredate = moment(date).format("X");
@@ -432,8 +439,19 @@ function getWeather(launchInfo) {
 
     weatherElement.textContent = response.data.days[0].description;
   }
-  // var apiUrl = `https://api.openweathermap.org/data/3.0/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${futuredate}&appid=${apiKey}`;
 
   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
   axios.get(apiUrl).then(showWeather);
 }
+
+// Function to filter date
+function handleFilterSearch(event) {
+  event.preventDefault();
+  startDate = moment(document.querySelector("#startDate").value);
+  endDate = moment(document.querySelector("#endDate").value);
+  searchInfo();
+}
+
+// Btn Event listener
+var findLaunch = document.querySelector("#findBtn");
+findLaunch.addEventListener("click", handleFilterSearch);
