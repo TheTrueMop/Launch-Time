@@ -79,6 +79,8 @@ getFutureLaunches();
 
 
 function writeFutureMissionsToDom() {
+  var clearNextFive = document.getElementById("nextFiveLaunchesList");
+  clearNextFive.replaceChildren();
   for (let i = 0; i < 98; i++) {
     console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -194,6 +196,7 @@ function writeFutureMissionsToDom() {
         console.log(savedMissions);
         localStorage.setItem("savedMissions", savedMissions);
         addFavoriteToList();
+
       }
     });
 
@@ -317,6 +320,7 @@ function addFavoriteToList() {
         console.log(savedMissions);
         localStorage.setItem("savedMissions", savedMissions);
         addFavoriteToList();
+        writeFutureMissionsToDom();
       }
     });
 
