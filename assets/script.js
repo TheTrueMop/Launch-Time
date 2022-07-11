@@ -4,9 +4,9 @@ var Dinstance = M.Modal.getInstance(document.querySelector("#modal1"));
 if (localStorage.getItem("savedMissions") !== null) {
   // alert("!");
   var getLocalStorageMissions = localStorage.getItem("savedMissions");
-  console.log(typeof getLocalStorageMissions);
+  // console.log(typeof getLocalStorageMissions);
   var savedMissions = getLocalStorageMissions.split(",");
-  console.log(savedMissions);
+  // console.log(savedMissions);
 } else {
   var savedMissions = [];
 }
@@ -44,13 +44,14 @@ var dataID;
 
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
-    console.log("This mission already saved.");
+    // console.log("This mission already saved.");
   } else {
     savedMissions.push(dataID);
-    console.log(savedMissions);
+    // console.log(savedMissions);
     addFavoriteToList();
     localStorage.setItem("savedMissions", savedMissions);
     console.log("ID SAVED FROM FUTURE LAUNCHES");
+    // console.log('ID SAVED FROM FUTURE LAUNCHES');
   }
 }
 function getFutureLaunches() {
@@ -64,7 +65,7 @@ function getFutureLaunches() {
     })
     .then(function (data) {
       futureMissions = data;
-      console.log(futureMissions);
+
 
       for (let i = 0; i < 6; i++) {
         console.log(futureMissions.results[i].window_start);
@@ -205,20 +206,174 @@ function getFutureLaunches() {
 getFutureLaunches();
 // ----------------------------------
 
-const missionTimerInterval = setInterval(missionTimer, 1000);
 
-function missionTimer() {
-  // console.log(today);
-  var now = moment().format("MMMM Do YYYY, h:mm:ss a");
-  var timerDivReady = document.querySelectorAll(".timer-div");
-  timerDivReady.textContent = " ";
 
-  // var timerLocation = document.createElement('p');
-  // var timerLocationTextNode = document.createTextNode(today);
-  // timerLocation.textContent = today;
-  for (i = 0; i < timerDivReady.length; i++) {
+// Write upcoming missions to the upcoming page
+function writeFutureMissionsToDom() {
+  var clearNextFive = document.getElementById("nextFiveLaunchesList");
+  clearNextFive.replaceChildren();
+  for (let i = 0; i < 10; i++) {
+    // console.log(futureMissions.results[i].window_start);
+    // CARD CONTAINER
+    var column = document.createElement("div");
+    column.classList.add("col");
+    column.classList.add("m4");
+    column.classList.add("s12");
+    column.classList.add("cardBoxes");
+    // CARD DIV
+    var card = document.createElement("div");
+    card.classList.add("card");
+    card.classList.add("agencyImage");
+    // CARD IMAGE DIV
+    var cardImage = document.createElement("div");
+    cardImage.classList.add("card-image");
+    // CARD IMG TAG
+    var cardImageURL = document.createElement("img");
+
+    cardImageURL.src = futureMissions.results[i].image;
+    // CREATE CARD TITLE SPAN
+    var cardTitleSpan = document.createElement("span");
+    cardTitleSpan.classList.add("card-title");
+    // CREATE TEXT NODE FOR CARD TITLE
+    var cardTitleTextNode = document.createTextNode(
+      futureMissions.results[i].name
+    );
+
+    // CREATE ICON ahref AREA
+    var cardTitleSpanLink = document.createElement("a");
+    cardTitleSpanLink.classList.add("btn-floating");
+    cardTitleSpanLink.classList.add("halfway-fab");
+    cardTitleSpanLink.classList.add("waves-effect");
+    cardTitleSpanLink.classList.add("waves-light");
+    cardTitleSpanLink.classList.add("red");
+
+    var addFavoriteIcon = document.createElement("i");
+    addFavoriteIcon.classList.add("material-icons");
+    addFavoriteIcon.classList.add("favoriteButtons");
+
+    if (savedMissions.indexOf(futureMissions.results[i].id) > -1) {
+      // console.log("YES: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("remove");
+
+    } else {
+      // console.log("no: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("add");
+    }
+    addFavoriteIcon.appendChild(addFavoriteIconTextNode);
+
+    // CREATE CARD CONTENT DIV
+    var cardContentDiv = document.createElement("div");
+    cardContentDiv.classList.add("card-content");
+    var cardContentDivTextNode = document.createTextNode(
+      futureMissions.results[i].window_start
+    );
+    cardContentDiv.appendChild(cardContentDivTextNode);
+
+    // CREATE CARD CONTENT EXPANSION
+    var cardReveal = document.createElement('div');
+    cardReveal.classList.add("card-reveal");
+
+    var cardRevealSpan = document.createElement('span');
+    cardRevealSpan.classList.add("card-title");
+    cardReveal.appendChild(cardRevealSpan);
+
+    var cardRevealExitIcon = document.createElement('i');
+    cardRevealExitIcon.classList.add('material-icons');
+    cardRevealExitIcon.classList.add('right');
+    cardRevealSpan.append(cardRevealExitIcon);
+
+    // var closeIcon = document.createTextNode('close');
+    cardRevealExitIcon.textContent = "close";
+    // cardRevealSpanP.appendChild(closeIcon);
+
+    var cardRevealSpanP = document.createElement('p');
+
+    if (futureMissions.results[i].mission) {
+      cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+    }
+
+    cardReveal.appendChild(cardRevealSpanP);
+
+    // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
+    column.appendChild(card);
+    // add IMG DIV
+    card.appendChild(cardImage);
+    // add IMG TAG
+    cardImage.appendChild(cardImageURL);
+    // APPEND CARD TITLE
+    cardImage.appendChild(cardTitleSpan);
+
+    cardTitleSpan.appendChild(cardTitleTextNode);
+    // append a icon div
+    cardImage.appendChild(cardTitleSpanLink);
+    // append text to trigger icon to i element
+    cardTitleSpanLink.appendChild(addFavoriteIcon);
+    addFavoriteIcon.setAttribute(
+      "data-launch-id",
+      futureMissions.results[i].id
+    );
+
+    // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+    addFavoriteIcon.addEventListener("click", function () {
+      // alert(this.getAttribute('data-launch-id'));
+      dataID = this.getAttribute("data-launch-id");
+      // console.log(dataID);
+      if (this.textContent == "add") {
+        this.textContent = "remove";
+        storeUniqueDataID();
+      } else {
+        this.textContent = "add";
+        savedMissions.splice(savedMissions.indexOf(dataID), 1);
+        // console.log(savedMissions);
+        localStorage.setItem("savedMissions", savedMissions);
+        addFavoriteToList();
+
+      }
+    });
+    //-------------------------------------------
+    // append card content div to CARD
+    card.appendChild(cardContentDiv);
+    cardContentDiv.classList.add('activator');
+    card.appendChild(cardReveal);
+    var timerDiv = document.createElement("div");
+    timerDiv.classList.add("timer-div");
+    card.appendChild(timerDiv);
+
+    // ADD TO DOM SECTION
+    document.getElementById("nextFiveLaunchesList").append(column);
+
+    var launchSchedule = futureMissions.results[i].net
+
+    console.log("launchdate");
+    console.log(launchSchedule);
+    var what = moment(launchSchedule).unix();
+
+    var now = moment(),
+      end = moment(launchSchedule),
+      millisecondsUntil = end.diff(now);
+
+
+
+    seconds = millisecondsUntil / 1000;
+    minutes = seconds / 60;
+    hours = minutes / 60;
+    hours = hours + 5;
+    days = hours / 24;
+
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    hours = hours % 24;
+
+    seconds = Math.floor(seconds);
+    minutes = Math.floor(minutes);
+    hours = Math.floor(hours);
+    days = Math.floor(days);
     // console.log(today);
-    timerDivReady[i].textContent = now;
+    var timerDivReady = document.querySelectorAll(".timer-div");
+    timerDivReady.textContent = " ";
+    timerDivReady[i].innerHTML = "Time until launch: " + "D:" + days + " HR:" + hours + " M:" + minutes + " S:" + seconds;
+    // console.log(timerDivReady[i].textContent = "Time until launch: " + "Days: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
+    console.log(typeof hours);
   }
 }
 
@@ -294,6 +449,26 @@ function addFavoriteToList() {
         futureMissions.results[i].id
       );
 
+
+      // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+      addFavoriteIcon.addEventListener("click", function () {
+        // alert(this.getAttribute('data-launch-id'));
+        dataID = this.getAttribute("data-launch-id");
+        // console.log(dataID);
+        if (this.textContent == "add") {
+          this.textContent = "remove";
+          storeUniqueDataID();
+        } else {
+          this.textContent = "add";
+          savedMissions.splice(savedMissions.indexOf(dataID), 1);
+          // console.log(savedMissions);
+          localStorage.setItem("savedMissions", savedMissions);
+          addFavoriteToList();
+          writeFutureMissionsToDom();
+        }
+      });
+
+
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
@@ -306,15 +481,17 @@ function addFavoriteToList() {
         futureMissions.results[i].window_start.split("T")[0];
 
       launchDate = futureMissionDate;
-      console.log("start: " + launchDate);
+      // console.log("start: " + launchDate);
       // datesArray.push(launchDate);
       // console.log(datesArray);
+
 
       // var weatherForecastTempDiv = document.createElement("div");
       // // weatherForecast.classList.add('weatherDiv');
       // var weatherForecastTempDivTextNode = document.createTextNode(launchDayTemp);
       // weatherForecastTempDiv.appendChild(weatherForecastTempDivTextNode);
       // card.appendChild(weatherForecastTempDiv);
+
 
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
@@ -323,6 +500,12 @@ function addFavoriteToList() {
   }
 }
 setTimeout(addFavoriteToList, 3000);
+
+// Dustin's Code ABOVE this line---------------------------------------------------------------------
+
+
+
+
 
 // -----> Search Lauches section (Itzel's)
 
@@ -414,21 +597,22 @@ searchInfo();
 
 //var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-function getWeather(launchInfo) {
-  var date = launchInfo.net;
-  var futuredate = moment(date).format("X");
-  var lat = launchInfo.pad.latitude;
-  var lon = launchInfo.pad.longitude;
+// function getWeather(launchInfo) {
+//   var date = launchInfo.net;
+//   var futuredate = moment(date).format("X");
+//   var lat = launchInfo.pad.latitude;
+//   var lon = launchInfo.pad.longitude;
 
-  function showWeather(response) {
-    console.log(response);
+//   function showWeather(response) {
+//     console.log(response);
 
-    var weatherElement = document.querySelector(
-      "#search" + launchInfo.id + " .weather"
-    );
+//     var weatherElement = document.querySelector(
+//       "#search" + launchInfo.id + " .weather"
+//     );
 
     weatherElement.textContent = response.data.days[0].description;
   }
   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
   axios.get(apiUrl).then(showWeather);
 }
+
