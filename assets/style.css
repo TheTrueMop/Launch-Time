@@ -20,11 +20,15 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
+/* ---> Logo style */
+
 header {
   text-align: center;
   display: block;
   margin: 0 auto;
 }
+
+/* ---> Navbar style */
 
 .tabs .tab a {
   color: white;
@@ -32,11 +36,9 @@ header {
 .tabs .indicator {
   background-color: var(--primary-text-color) !important;
 }
-
 .tabs .tab a:hover,
 .tabs .tab a.active {
   background-color: var(--secondary-text-color) !important;
-
   color: var(--primary-color) !important;
 }
 a {
@@ -44,20 +46,14 @@ a {
   color: white;
 }
 
-ul {
-  list-style-type: none;
-}
+/* ---> Search Launches style */
 
+/* Search launches side bar style */
 .findBtn {
   background-color: var(--secondary-color);
   padding: 10px;
   border-radius: 20px;
 }
-
-.customCard {
-  border-bottom: 1px solid var(--secondary-text-color);
-}
-
 .sidenav {
   padding: 25px !important;
 }
@@ -72,10 +68,38 @@ input {
 .btn {
   background-color: var(--primary-color);
 }
-
 .sidenav li > a.btn:hover {
   background-color: var(--secondary-color);
 }
+
+/* search lauches content style */
+.customCard {
+  text-align: left;
+  background-color: rgb(0, 0, 0, 0.6);
+  border-radius: 10px;
+  padding: 12px;
+}
+.customCard p {
+  line-height: 30px;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+}
+.customCard p span {
+  color: var(--primary-text-color);
+}
+
+.agencyImg {
+  border-radius: 20px;
+  width: 100%;
+  height: 160px;
+}
+.saveBtn {
+  background-color: red;
+  border-radius: 50%;
+  padding: 12px 3px 2px 3px;
+}
+
+/* ---> Upcoming Launches style */
 
 #nextFiveLaunchesList li,
 #lastFiveLaunchesList li {
@@ -88,16 +112,6 @@ input {
   margin-bottom: 10px;
 }
 
-.agencyImg {
-  border-radius: 20px;
-  width: 200px;
-  height: 120px;
-}
-.saveBtn {
-  background-color: red;
-  border-radius: 50%;
-  padding: 12px 5px 3px 5px;
-}
 /* .shipImages {
     height: 50px;
     width: 50px;
@@ -127,4 +141,14 @@ min-width: 170px; */
 
 .timer-div {
   color: white;
+}
+
+/* Media queries */
+@media (max-width: 600px) {
+  .findBtn span {
+    display: none;
+  }
+  .agencyImg {
+    display: none;
+  }
 }
