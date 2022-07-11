@@ -31,6 +31,7 @@
     </div>
   </header>
 
+
   <!-- Search bar -->
   <div class="row">
     <div class="container">
@@ -75,6 +76,44 @@
         </div>
         <li><a class="waves-effect waves-light btn">Find Launches</a></li>
       </ul>
+
+          <!-- dates -->
+          <div class="date-inputs">
+            <input type="date" id="startDate" />
+            <div>to</div>
+            <input type="date" id="endDate" />
+          </div>
+          <!-- Switch -->
+          <!-- <li>Programs</li>
+          <div class="switch">
+            <label>
+              SpaceX On/Off
+              <input type="checkbox" />
+              <span class="lever"></span>
+            </label>
+          </div>
+          <div class="switch">
+            <label>
+              Blue Origin On/Off
+              <input type="checkbox" />
+              <span class="lever"></span>
+            </label>
+          </div>
+          <div class="switch">
+            <label>
+              ROSCOSMOS On/Off
+              <input type="checkbox" />
+              <span class="lever"></span>
+            </label>
+          </div> -->
+          <li>
+            <a class="waves-effect waves-light btn" id="findBtn"
+              >Find Launches</a
+            >
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 
@@ -106,6 +145,7 @@
         </div>
       </div>
 
+
       <div class="row">
         <div id="test2" class="col s12">
           <div class="col s2">
@@ -113,6 +153,23 @@
               Find a launch
               <i class="material-icons">search</i>
             </a>
+
+        <div class="row">
+          <div id="test2" class="col s12">
+            <div class="col s2">
+              <a
+                href="#"
+                data-target="slide-out"
+                class="sidenav-trigger findBtn"
+              >
+                <span>Find a launch</span>
+                <i class="material-icons">search</i>
+              </a>
+            </div>
+
+            <div class="col s9" id="searchresults"></div>
+             <div class="col s1"></div>
+
           </div>
 
           <div class="col s10" id="searchresults"></div>
@@ -125,10 +182,30 @@
         <div class="col s1"></div>
 
       </div>
+      
+       </div>
+    <!-- Dawson Modal Code for Desc -->
+    <div id="modal1" class="modal modal-fixed-footer">
+      <div class="modal-content row">
+        <img src="" alt="Rocket Image" id="modal-img" class="col s5"/>
+        <h4 id="modal-title" class="col s7">Temp</h4>
+        <p id="modal-desc" class="col s7">Temp</p>
+        <h5 id="modal-tMinus" class="col s12">TMinus</h5>
+        <div id="modal-weather" class="col s5"></div>
+        
+      </div>
+      <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+    <!-- Dawson End of Code-->
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
       <script src="./assets/script.js"></script>
-</body>
 
+
+   
+
+</body>
 </html>

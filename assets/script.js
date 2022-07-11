@@ -1,5 +1,5 @@
-// Dustin's Code BELOW this line--------------Itzel's code farther down below----------------------------------------------
-
+M.AutoInit();
+var Dinstance = M.Modal.getInstance(document.querySelector('#modal1'));
 // Get local storage items if they exist, and if not - create an empty array
 if (localStorage.getItem("savedMissions") !== null) {
   // alert("!");
@@ -24,7 +24,7 @@ var instances = M.Sidenav.init(elems, {});
 // Global Variables from LAUNCH API
 // var lat;
 // var long;
-var descriptionOfLaunch;
+var description;
 var launchDayTemp;
 var launchDate;
 var missions;
@@ -66,16 +66,146 @@ function getFutureLaunches() {
     })
     .then(function (data) {
       futureMissions = data;
-      // console.log("f: ");
-      // console.log(futureMissions);
 
-    }).then(function () {
-      writeFutureMissionsToDom();
+
+      for (let i = 0; i < 6; i++) {
+        console.log(futureMissions.results[i].window_start);
+        // CARD CONTAINER
+        var column = document.createElement("div");
+        column.classList.add("col");
+        column.classList.add("m4");
+        column.classList.add("s12");
+        column.classList.add("cardBoxes");
+        // CARD DIV
+        var card = document.createElement("div");
+        card.classList.add("card");
+        card.classList.add("agencyImage");
+        // CARD IMAGE DIV
+        var cardImage = document.createElement("div");
+        cardImage.classList.add("card-image");
+        // CARD IMG TAG
+        var cardImageURL = document.createElement("img");
+
+        cardImageURL.src = futureMissions.results[i].image;
+        // CREATE CARD TITLE SPAN
+        var cardTitleSpan = document.createElement("span");
+        cardTitleSpan.classList.add("card-title");
+        // CREATE TEXT NODE FOR CARD TITLE
+        var cardTitleTextNode = document.createTextNode(
+          futureMissions.results[i].name
+        );
+
+        // CREATE ICON ahref AREA
+        var cardTitleSpanLink = document.createElement("a");
+        cardTitleSpanLink.classList.add("btn-floating");
+        cardTitleSpanLink.classList.add("halfway-fab");
+        cardTitleSpanLink.classList.add("waves-effect");
+        cardTitleSpanLink.classList.add("waves-light");
+        cardTitleSpanLink.classList.add("red");
+
+        var addFavoriteIcon = document.createElement("i");
+        addFavoriteIcon.classList.add("material-icons");
+        addFavoriteIcon.classList.add("favoriteButtons");
+        var addFavoriteIconTextNode = document.createTextNode("add");
+        addFavoriteIcon.appendChild(addFavoriteIconTextNode);
+
+        // CREATE CARD CONTENT DIV
+        var cardContentDiv = document.createElement("div");
+        cardContentDiv.classList.add("card-content");
+        var cardContentDivTextNode = document.createTextNode(
+          futureMissions.results[i].window_start
+        );
+        cardContentDiv.appendChild(cardContentDivTextNode);
+
+        // CREATE CARD CONTENT EXPANSION
+        var cardReveal = document.createElement('div');
+        cardReveal.classList.add("card-reveal");
+
+        var cardRevealSpan = document.createElement('span');
+        cardRevealSpan.classList.add("card-title");
+        cardReveal.appendChild(cardRevealSpan);
+
+        var cardRevealExitIcon = document.createElement('i');
+        cardRevealExitIcon.classList.add('material-icons');
+        cardRevealExitIcon.classList.add('right');
+        cardRevealSpan.append(cardRevealExitIcon);
+
+        // var closeIcon = document.createTextNode('close');
+        cardRevealExitIcon.textContent = "close";
+        // cardRevealSpanP.appendChild(closeIcon);
+
+        var cardRevealSpanP = document.createElement('p');
+        cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+        cardReveal.appendChild(cardRevealSpanP);
+
+        // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
+        column.appendChild(card);
+        // add IMG DIV
+        card.appendChild(cardImage);
+        // add IMG TAG
+        cardImage.appendChild(cardImageURL);
+        // APPEND CARD TITLE
+        cardImage.appendChild(cardTitleSpan);
+
+        cardTitleSpan.appendChild(cardTitleTextNode);
+        // append a icon div
+        cardImage.appendChild(cardTitleSpanLink);
+        // append text to trigger icon to i element
+        cardTitleSpanLink.appendChild(addFavoriteIcon);
+        addFavoriteIcon.setAttribute(
+          "data-launch-id",
+          futureMissions.results[i].id
+        );
+
+        // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+        addFavoriteIcon.addEventListener("click", function () {
+          // alert(this.getAttribute('data-launch-id'));
+          dataID = this.getAttribute("data-launch-id");
+          // console.log(dataID);
+          if (this.textContent == "add") {
+            this.textContent = "remove";
+            storeUniqueDataID();
+          } else {
+            this.textContent = "add";
+            savedMissions.splice(savedMissions.indexOf(dataID), 1);
+            console.log(savedMissions);
+            localStorage.setItem("savedMissions", savedMissions);
+          }
+        });
+        // Dawson added modal sorry if this gets in the way Dustin
+        cardTitleSpan.addEventListener("click", function () {
+          var mTitle = futureMissions.results[i].name;
+          var mDescription = futureMissions.results[i].mission.description;
+          var mImage = futureMissions.results[i].image;
+          // var mWeather =
+          var mTimeDiff = moment(futureMissions.results[i].window_start).fromNow();
+          document.getElementById("modal-title").innerText = mTitle;
+          document.getElementById("modal-desc").innerText = mDescription;
+          document.getElementById("modal-img").src = mImage;
+          // document.getElementById("modal-weather").textContent = mWeather;
+          document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+          
+          Dinstance.open();
+        });
+        // Dawson End Of Code
+
+        // append card content div to CARD
+        card.appendChild(cardContentDiv);
+        cardContentDiv.classList.add('activator');
+        card.appendChild(cardReveal);
+        var timerDiv = document.createElement("div");
+        timerDiv.classList.add("timer-div");
+        card.appendChild(timerDiv);
+
+        // ADD TO DOM SECTION
+        document.getElementById("nextFiveLaunchesList").append(column);
+      }
     });
 
 }
 getFutureLaunches();
 // ----------------------------------
+
 
 
 // Write upcoming missions to the upcoming page
@@ -222,6 +352,8 @@ function writeFutureMissionsToDom() {
       end = moment(launchSchedule),
       millisecondsUntil = end.diff(now);
 
+
+
     seconds = millisecondsUntil / 1000;
     minutes = seconds / 60;
     hours = minutes / 60;
@@ -319,6 +451,7 @@ function addFavoriteToList() {
         futureMissions.results[i].id
       );
 
+
       // CLICK HANDLER!!!!!!!!!!!!!!!!!!
       addFavoriteIcon.addEventListener("click", function () {
         // alert(this.getAttribute('data-launch-id'));
@@ -336,6 +469,7 @@ function addFavoriteToList() {
           writeFutureMissionsToDom();
         }
       });
+
 
       // append card content div to CARD
       card.appendChild(cardContentDiv);
@@ -360,6 +494,7 @@ function addFavoriteToList() {
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
 
+    } else {
     }
   }
 }
@@ -369,6 +504,12 @@ setTimeout(addFavoriteToList, 3000);
 
 
 
+
+
+// -----> Search Lauches section (Itzel's)
+
+var startDate = moment();
+var endDate = moment().add(365, "days");
 
 
 
@@ -420,25 +561,34 @@ function searchInfo() {
 //    htmlText += launchComponent(array[i])
 function launchComponent(launchInfo) {
   var searchHTML = `  
-    <div id="search${launchInfo.id}" class="row customCard">
+    <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
       <div class="col s3">
         <img class="agencyImg" src="${launchInfo.image}" /> 
       </div>
-      <div class="col s5">
-        <p>Company:<span>${launchInfo.launch_service_provider.name}</span></p>
-        <p>Name:<span>${launchInfo.name}</span></p>
-        <p>Date:<span>${launchInfo.net}</span></p>
-        <p>Location:<span>${launchInfo.pad.location.name}</span></p>  
+
+      <div class="col s4">
+        <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
+        <p>Name: <span>${launchInfo.name}</span></p>
+        <p>Date: <span>${moment(launchInfo.net).format(
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
+        <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
+
       </div>
-      <div class="col s3">
-        <p>Weather:<span class="weather"></span></p>
+      <div class="col s3 customWeather">
+        <p>Weather: <span class="weather"></span></p>
       </div> 
-      <div class="col s1">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id}" class="material-icons">add</i></a>
-      </div>  
+
+      <div class="col s1 customIcon">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">add</i></a>
+      </div>
     </div>`;
   return searchHTML;
 }
+
+// Call to show 8 upcoming launches
 searchInfo();
 
 // Search weather
