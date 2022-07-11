@@ -67,9 +67,9 @@ function getFutureLaunches() {
     .then(function (data) {
       futureMissions = data;
       console.log("f: ");
-      console.log(futureMissions.results);
+      console.log(futureMissions);
 
-    }).then(function() {
+    }).then(function () {
       writeFutureMissionsToDom();
     });
 
@@ -117,7 +117,15 @@ function writeFutureMissionsToDom() {
     var addFavoriteIcon = document.createElement("i");
     addFavoriteIcon.classList.add("material-icons");
     addFavoriteIcon.classList.add("favoriteButtons");
-    var addFavoriteIconTextNode = document.createTextNode("add");
+
+    if (savedMissions.indexOf(futureMissions.results[i].id) > -1) {
+      console.log("YES: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("remove");
+
+    } else {
+      console.log("no: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("add");
+    }
     addFavoriteIcon.appendChild(addFavoriteIconTextNode);
 
     // CREATE CARD CONTENT DIV
@@ -187,6 +195,7 @@ function writeFutureMissionsToDom() {
         localStorage.setItem("savedMissions", savedMissions);
       }
     });
+
     // append card content div to CARD
     card.appendChild(cardContentDiv);
     cardContentDiv.classList.add('activator');
@@ -197,6 +206,8 @@ function writeFutureMissionsToDom() {
 
     // ADD TO DOM SECTION
     document.getElementById("nextFiveLaunchesList").append(column);
+
+
   }
 }
 
@@ -318,7 +329,6 @@ function addFavoriteToList() {
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
 
-    } else {
     }
   }
 }
