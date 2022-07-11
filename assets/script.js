@@ -193,6 +193,7 @@ function writeFutureMissionsToDom() {
         savedMissions.splice(savedMissions.indexOf(dataID), 1);
         console.log(savedMissions);
         localStorage.setItem("savedMissions", savedMissions);
+        addFavoriteToList();
       }
     });
 
@@ -301,6 +302,23 @@ function addFavoriteToList() {
         "data-launch-id",
         futureMissions.results[i].id
       );
+
+         // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+    addFavoriteIcon.addEventListener("click", function () {
+      // alert(this.getAttribute('data-launch-id'));
+      dataID = this.getAttribute("data-launch-id");
+      // console.log(dataID);
+      if (this.textContent == "add") {
+        this.textContent = "remove";
+        storeUniqueDataID();
+      } else {
+        this.textContent = "add";
+        savedMissions.splice(savedMissions.indexOf(dataID), 1);
+        console.log(savedMissions);
+        localStorage.setItem("savedMissions", savedMissions);
+        addFavoriteToList();
+      }
+    });
 
       // append card content div to CARD
       card.appendChild(cardContentDiv);
