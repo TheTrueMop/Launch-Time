@@ -595,7 +595,7 @@ searchInfo();
 
 // Search weather
 
-//var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+// var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
 
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
@@ -610,9 +610,10 @@ searchInfo();
 //       "#search" + launchInfo.id + " .weather"
 //     );
 
-    weatherElement.textContent = response.data.days[0].description;
-  }
-  var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-  axios.get(apiUrl).then(showWeather);
-}
+//     weatherElement.textContent = response.data.days[0].description;
+//   }
+//   // var apiUrl = `https://api.openweathermap.org/data/3.0/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${futuredate}&appid=${apiKey}`;
 
+//   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
+//   axios.get(apiUrl).then(showWeather);
+// }
