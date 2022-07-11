@@ -133,7 +133,7 @@ min-width: 170px; */
 
 .agencyImage {
   background-color: black !important;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 
 .card .card-image .card-title {
@@ -142,6 +142,7 @@ min-width: 170px; */
 
 .card-content {
   color: white;
+  opacity: .8;
 }
 
 .card .card-reveal {
