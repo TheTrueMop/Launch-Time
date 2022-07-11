@@ -591,7 +591,7 @@ searchInfo();
 
 // Search weather
 
-//var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+// var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
 
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
@@ -608,6 +608,7 @@ searchInfo();
 
 //     weatherElement.textContent = response.data.days[0].description;
 //   }
+
 //   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
 //   axios.get(apiUrl).then(showWeather);
 // }
@@ -623,3 +624,4 @@ function handleFilterSearch(event) {
 // Btn Event listener
 var findLaunch = document.querySelector("#findBtn");
 findLaunch.addEventListener("click", handleFilterSearch);
+
