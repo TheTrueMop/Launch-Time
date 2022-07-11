@@ -362,23 +362,21 @@ function displayLaunches(response) {
   var results = response.data.results.filter(function (launch) {
     return moment(launch.net).isBetween(startDate, endDate);
   });
-
   var searchHTML = ``;
-
   for (i = 0; i < Math.min(results.length, 8); i++) {
     searchHTML += launchComponent(results[i]);
   }
-  //searchHTML = searchHTML + `</span>`;
-
   document.querySelector("#searchresults").innerHTML = searchHTML;
-
   var saveLaunchHandler = function (event) {
     var dataId = event.target.dataset.id;
     if (savedMissions.indexOf(dataId) == -1) {
       savedMissions.push(dataId);
+      
       addFavoriteToList();
     }
   };
+
+  
   var elements = document.querySelectorAll(".search-add-favorite");
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener("click", saveLaunchHandler);
@@ -441,9 +439,8 @@ function getWeather(launchInfo) {
 
     weatherElement.textContent = response.data.days[0].description;
   }
-
-  var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
-  axios.get(apiUrl).then(showWeather);
+  var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=X2BCVEUMVC22RSDXLPE88U4YL&contentType=json`;
+  axios.get(apiUrlWeather).then(showWeather);
 }
 
 // Function to filter date
