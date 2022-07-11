@@ -77,6 +77,19 @@ input {
   background-color: var(--secondary-color);
 }
 
+/* workaround for buggy select boxes in materialize */
+.select-wrapper input.select-dropdown {
+  display: none;
+}
+.caret {
+  display: none;
+}
+
+#cities,
+#company {
+  display: block;
+}
+
 /* search lauches content style */
 .customCard {
   text-align: left;
