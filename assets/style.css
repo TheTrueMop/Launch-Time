@@ -10,12 +10,17 @@
   --secondary-text-color: #ced7e0;
 }
 
+html { 
+  background: url("../images/background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
   height: 100vh;
   width: 100%;
-  background-image: url("../images/background.jpg");
-  background-size: cover;
-  background-position: center center;
   color: var(--primary-text-color);
   font-family: "Raleway", sans-serif;
 }
@@ -139,9 +144,27 @@ min-width: 170px; */
   color: white;
 }
 
+.card .card-reveal {
+background-color: black;
+}
+
 .timer-div {
   color: white;
 }
+
+/* Dawson CSS */
+.modal {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+}
+.modal .modal-footer {
+  background-color: var(--secondary-color);
+  color: var(--secondary-text-color);
+}
+.modal .modal-footer a{
+  color: var(--secondary-text-color);
+}
+/* Dawson End of CSS*/
 
 /* Media queries */
 
@@ -156,3 +179,4 @@ min-width: 170px; */
     font-size: 14px;
   }
 }
+
