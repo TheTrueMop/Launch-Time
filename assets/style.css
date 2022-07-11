@@ -142,7 +142,7 @@ min-width: 170px; */
 
 .card-content {
   color: white;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .card .card-reveal {
@@ -173,11 +173,18 @@ min-width: 170px; */
   .findBtn span {
     display: none;
   }
+  .findBtn {
+    border-radius: 50%;
+    padding-top: 18px;
+  }
   .agencyImg {
     display: none;
   }
   .customCard p {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .customCard {
+    padding-right: 18px;
   }
 }
-

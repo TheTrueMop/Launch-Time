@@ -561,10 +561,10 @@ function searchInfo() {
 function launchComponent(launchInfo) {
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
-      <div class="col s3">
+      <div class="col s0 m3">
         <img class="agencyImg" src="${launchInfo.image}" /> 
       </div>
-      <div class="col s4">
+      <div class="col s6 m4">
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
@@ -572,10 +572,10 @@ function launchComponent(launchInfo) {
         )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
-      <div class="col s3 customWeather">
+      <div class="col s5 m3 customWeather">
         <p>Weather: <span class="weather"></span></p>
       </div> 
-      <div class="col s1 customIcon">
+      <div class="col s1 m1 customIcon">
         <a href="#" class="saveBtn search-add-favorite"><i data-id="${
           launchInfo.id
         }" class="material-icons">
@@ -591,7 +591,7 @@ searchInfo();
 
 // Search weather
 
-//var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+// var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
