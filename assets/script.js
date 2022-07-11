@@ -346,15 +346,23 @@ function displayLaunches(response) {
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
   var saveLaunchHandler = function (event) {
-    var dataId = event.target.dataset.id;
-    if (savedMissions.indexOf(dataId) == -1) {
-      savedMissions.push(dataId);
+    event.preventDefault();
+    var el = event.target;
+    var dataId = el.dataset.id;
+    var index = savedMissions.indexOf(dataId);
 
-      addFavoriteToList();
+    if (index == -1) {
+      savedMissions.push(dataId);
+      el.textContent = "remove";
+    } else {
+      el.textContent = "add";
+      savedMissions.splice(index, 1);
     }
+    localStorage.setItem("savedMissions", savedMissions);
+    addFavoriteToList();
   };
 
-  var elements = document.querySelectorAll(".search-add-favorite");
+  var elements = document.querySelectorAll(".search-add-favorite i");
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener("click", saveLaunchHandler);
   }
@@ -393,7 +401,9 @@ function launchComponent(launchInfo) {
       <div class="col s1 customIcon">
         <a href="#" class="saveBtn search-add-favorite"><i data-id="${
           launchInfo.id
-        }" class="material-icons">add</i></a>
+        }" class="material-icons">
+        ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
+        </i></a>
       </div>
     </div>`;
   return searchHTML;
