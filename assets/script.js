@@ -1,3 +1,5 @@
+// Dustin's Code BELOW this line--------------Itzel's code farther down below----------------------------------------------
+
 // Get local storage items if they exist, and if not - create an empty array
 if (localStorage.getItem("savedMissions") !== null) {
   // alert("!");
@@ -22,7 +24,7 @@ var instances = M.Sidenav.init(elems, {});
 // Global Variables from LAUNCH API
 // var lat;
 // var long;
-var description;
+var descriptionOfLaunch;
 var launchDayTemp;
 var launchDate;
 var missions;
@@ -64,128 +66,139 @@ function getFutureLaunches() {
     })
     .then(function (data) {
       futureMissions = data;
-      console.log(futureMissions);
+      console.log("f: ");
+      console.log(futureMissions.results);
 
-      for (let i = 0; i < 6; i++) {
-        console.log(futureMissions.results[i].window_start);
-        // CARD CONTAINER
-        var column = document.createElement("div");
-        column.classList.add("col");
-        column.classList.add("m4");
-        column.classList.add("s12");
-        column.classList.add("cardBoxes");
-        // CARD DIV
-        var card = document.createElement("div");
-        card.classList.add("card");
-        card.classList.add("agencyImage");
-        // CARD IMAGE DIV
-        var cardImage = document.createElement("div");
-        cardImage.classList.add("card-image");
-        // CARD IMG TAG
-        var cardImageURL = document.createElement("img");
-
-        cardImageURL.src = futureMissions.results[i].image;
-        // CREATE CARD TITLE SPAN
-        var cardTitleSpan = document.createElement("span");
-        cardTitleSpan.classList.add("card-title");
-        // CREATE TEXT NODE FOR CARD TITLE
-        var cardTitleTextNode = document.createTextNode(
-          futureMissions.results[i].name
-        );
-
-        // CREATE ICON ahref AREA
-        var cardTitleSpanLink = document.createElement("a");
-        cardTitleSpanLink.classList.add("btn-floating");
-        cardTitleSpanLink.classList.add("halfway-fab");
-        cardTitleSpanLink.classList.add("waves-effect");
-        cardTitleSpanLink.classList.add("waves-light");
-        cardTitleSpanLink.classList.add("red");
-
-        var addFavoriteIcon = document.createElement("i");
-        addFavoriteIcon.classList.add("material-icons");
-        addFavoriteIcon.classList.add("favoriteButtons");
-        var addFavoriteIconTextNode = document.createTextNode("add");
-        addFavoriteIcon.appendChild(addFavoriteIconTextNode);
-
-        // CREATE CARD CONTENT DIV
-        var cardContentDiv = document.createElement("div");
-        cardContentDiv.classList.add("card-content");
-        var cardContentDivTextNode = document.createTextNode(
-          futureMissions.results[i].window_start
-        );
-        cardContentDiv.appendChild(cardContentDivTextNode);
-
-        // CREATE CARD CONTENT EXPANSION
-        var cardReveal = document.createElement('div');
-        cardReveal.classList.add("card-reveal");
-
-        var cardRevealSpan = document.createElement('span');
-        cardRevealSpan.classList.add("card-title");
-        cardReveal.appendChild(cardRevealSpan);
-
-        var cardRevealExitIcon = document.createElement('i');
-        cardRevealExitIcon.classList.add('material-icons');
-        cardRevealExitIcon.classList.add('right');
-        cardRevealSpan.append(cardRevealExitIcon);
-
-        // var closeIcon = document.createTextNode('close');
-        cardRevealExitIcon.textContent = "close";
-        // cardRevealSpanP.appendChild(closeIcon);
-
-        var cardRevealSpanP = document.createElement('p');
-        cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
-        cardReveal.appendChild(cardRevealSpanP);
-
-        // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
-        column.appendChild(card);
-        // add IMG DIV
-        card.appendChild(cardImage);
-        // add IMG TAG
-        cardImage.appendChild(cardImageURL);
-        // APPEND CARD TITLE
-        cardImage.appendChild(cardTitleSpan);
-
-        cardTitleSpan.appendChild(cardTitleTextNode);
-        // append a icon div
-        cardImage.appendChild(cardTitleSpanLink);
-        // append text to trigger icon to i element
-        cardTitleSpanLink.appendChild(addFavoriteIcon);
-        addFavoriteIcon.setAttribute(
-          "data-launch-id",
-          futureMissions.results[i].id
-        );
-
-        // CLICK HANDLER!!!!!!!!!!!!!!!!!!
-        addFavoriteIcon.addEventListener("click", function () {
-          // alert(this.getAttribute('data-launch-id'));
-          dataID = this.getAttribute("data-launch-id");
-          // console.log(dataID);
-          if (this.textContent == "add") {
-            this.textContent = "remove";
-            storeUniqueDataID();
-          } else {
-            this.textContent = "add";
-            savedMissions.splice(savedMissions.indexOf(dataID), 1);
-            console.log(savedMissions);
-            localStorage.setItem("savedMissions", savedMissions);
-          }
-        });
-        // append card content div to CARD
-        card.appendChild(cardContentDiv);
-        cardContentDiv.classList.add('activator');
-        card.appendChild(cardReveal);
-        var timerDiv = document.createElement("div");
-        timerDiv.classList.add("timer-div");
-        card.appendChild(timerDiv);
-
-        // ADD TO DOM SECTION
-        document.getElementById("nextFiveLaunchesList").append(column);
-      }
+    }).then(function() {
+      writeFutureMissionsToDom();
     });
 
 }
 getFutureLaunches();
 // ----------------------------------
+
+
+function writeFutureMissionsToDom() {
+  for (let i = 0; i < 98; i++) {
+    console.log(futureMissions.results[i].window_start);
+    // CARD CONTAINER
+    var column = document.createElement("div");
+    column.classList.add("col");
+    column.classList.add("m4");
+    column.classList.add("s12");
+    column.classList.add("cardBoxes");
+    // CARD DIV
+    var card = document.createElement("div");
+    card.classList.add("card");
+    card.classList.add("agencyImage");
+    // CARD IMAGE DIV
+    var cardImage = document.createElement("div");
+    cardImage.classList.add("card-image");
+    // CARD IMG TAG
+    var cardImageURL = document.createElement("img");
+
+    cardImageURL.src = futureMissions.results[i].image;
+    // CREATE CARD TITLE SPAN
+    var cardTitleSpan = document.createElement("span");
+    cardTitleSpan.classList.add("card-title");
+    // CREATE TEXT NODE FOR CARD TITLE
+    var cardTitleTextNode = document.createTextNode(
+      futureMissions.results[i].name
+    );
+
+    // CREATE ICON ahref AREA
+    var cardTitleSpanLink = document.createElement("a");
+    cardTitleSpanLink.classList.add("btn-floating");
+    cardTitleSpanLink.classList.add("halfway-fab");
+    cardTitleSpanLink.classList.add("waves-effect");
+    cardTitleSpanLink.classList.add("waves-light");
+    cardTitleSpanLink.classList.add("red");
+
+    var addFavoriteIcon = document.createElement("i");
+    addFavoriteIcon.classList.add("material-icons");
+    addFavoriteIcon.classList.add("favoriteButtons");
+    var addFavoriteIconTextNode = document.createTextNode("add");
+    addFavoriteIcon.appendChild(addFavoriteIconTextNode);
+
+    // CREATE CARD CONTENT DIV
+    var cardContentDiv = document.createElement("div");
+    cardContentDiv.classList.add("card-content");
+    var cardContentDivTextNode = document.createTextNode(
+      futureMissions.results[i].window_start
+    );
+    cardContentDiv.appendChild(cardContentDivTextNode);
+
+    // CREATE CARD CONTENT EXPANSION
+    var cardReveal = document.createElement('div');
+    cardReveal.classList.add("card-reveal");
+
+    var cardRevealSpan = document.createElement('span');
+    cardRevealSpan.classList.add("card-title");
+    cardReveal.appendChild(cardRevealSpan);
+
+    var cardRevealExitIcon = document.createElement('i');
+    cardRevealExitIcon.classList.add('material-icons');
+    cardRevealExitIcon.classList.add('right');
+    cardRevealSpan.append(cardRevealExitIcon);
+
+    // var closeIcon = document.createTextNode('close');
+    cardRevealExitIcon.textContent = "close";
+    // cardRevealSpanP.appendChild(closeIcon);
+
+    var cardRevealSpanP = document.createElement('p');
+
+    if (futureMissions.results[i].mission) {
+      cardRevealSpanP.textContent = futureMissions.results[i].mission.description;
+    }
+
+    cardReveal.appendChild(cardRevealSpanP);
+
+    // add CARD DIV to CARD COLUMN DIVCARD CONTAINER
+    column.appendChild(card);
+    // add IMG DIV
+    card.appendChild(cardImage);
+    // add IMG TAG
+    cardImage.appendChild(cardImageURL);
+    // APPEND CARD TITLE
+    cardImage.appendChild(cardTitleSpan);
+
+    cardTitleSpan.appendChild(cardTitleTextNode);
+    // append a icon div
+    cardImage.appendChild(cardTitleSpanLink);
+    // append text to trigger icon to i element
+    cardTitleSpanLink.appendChild(addFavoriteIcon);
+    addFavoriteIcon.setAttribute(
+      "data-launch-id",
+      futureMissions.results[i].id
+    );
+
+    // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+    addFavoriteIcon.addEventListener("click", function () {
+      // alert(this.getAttribute('data-launch-id'));
+      dataID = this.getAttribute("data-launch-id");
+      // console.log(dataID);
+      if (this.textContent == "add") {
+        this.textContent = "remove";
+        storeUniqueDataID();
+      } else {
+        this.textContent = "add";
+        savedMissions.splice(savedMissions.indexOf(dataID), 1);
+        console.log(savedMissions);
+        localStorage.setItem("savedMissions", savedMissions);
+      }
+    });
+    // append card content div to CARD
+    card.appendChild(cardContentDiv);
+    cardContentDiv.classList.add('activator');
+    card.appendChild(cardReveal);
+    var timerDiv = document.createElement("div");
+    timerDiv.classList.add("timer-div");
+    card.appendChild(timerDiv);
+
+    // ADD TO DOM SECTION
+    document.getElementById("nextFiveLaunchesList").append(column);
+  }
+}
 
 const missionTimerInterval = setInterval(missionTimer, 1000);
 

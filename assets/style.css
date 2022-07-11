@@ -10,12 +10,17 @@
   --secondary-text-color: #ced7e0;
 }
 
+html { 
+  background: url("../images/background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
   height: 100vh;
   width: 100%;
-  background-image: url("../images/background.jpg");
-  background-size: cover;
-  background-position: center center;
   color: var(--primary-text-color);
   font-family: "Raleway", sans-serif;
 }
@@ -123,6 +128,10 @@ min-width: 170px; */
 
 .card-content {
   color: white;
+}
+
+.card .card-reveal {
+background-color: black;
 }
 
 .timer-div {
