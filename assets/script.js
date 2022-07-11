@@ -68,8 +68,10 @@ function getFutureLaunches() {
       futureMissions = data;
 
 
+
       for (let i = 0; i < 6; i++) {
         console.log(futureMissions.results[i].window_start);
+        console.log(futureMissions.results[i].launch_service_provider.name);
         // CARD CONTAINER
         var column = document.createElement("div");
         column.classList.add("col");
@@ -201,7 +203,6 @@ function getFutureLaunches() {
         document.getElementById("nextFiveLaunchesList").append(column);
       }
     });
-
 }
 getFutureLaunches();
 // ----------------------------------
@@ -327,7 +328,7 @@ function writeFutureMissionsToDom() {
         // console.log(savedMissions);
         localStorage.setItem("savedMissions", savedMissions);
         addFavoriteToList();
-
+        writeFutureMissionsToDom();
       }
     });
     //-------------------------------------------
@@ -373,7 +374,7 @@ function writeFutureMissionsToDom() {
     timerDivReady.textContent = " ";
     timerDivReady[i].innerHTML = "Time until launch: " + "D:" + days + " HR:" + hours + " M:" + minutes + " S:" + seconds;
     // console.log(timerDivReady[i].textContent = "Time until launch: " + "Days: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
-    console.log(typeof hours);
+
   }
 }
 
