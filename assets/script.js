@@ -67,9 +67,9 @@ function getFutureLaunches() {
     .then(function (data) {
       futureMissions = data;
       console.log("f: ");
-      console.log(futureMissions.results);
+      console.log(futureMissions);
 
-    }).then(function() {
+    }).then(function () {
       writeFutureMissionsToDom();
     });
 
@@ -79,6 +79,8 @@ getFutureLaunches();
 
 
 function writeFutureMissionsToDom() {
+  var clearNextFive = document.getElementById("nextFiveLaunchesList");
+  clearNextFive.replaceChildren();
   for (let i = 0; i < 98; i++) {
     console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -117,7 +119,15 @@ function writeFutureMissionsToDom() {
     var addFavoriteIcon = document.createElement("i");
     addFavoriteIcon.classList.add("material-icons");
     addFavoriteIcon.classList.add("favoriteButtons");
-    var addFavoriteIconTextNode = document.createTextNode("add");
+
+    if (savedMissions.indexOf(futureMissions.results[i].id) > -1) {
+      console.log("YES: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("remove");
+
+    } else {
+      console.log("no: " + futureMissions.results[i].id);
+      var addFavoriteIconTextNode = document.createTextNode("add");
+    }
     addFavoriteIcon.appendChild(addFavoriteIconTextNode);
 
     // CREATE CARD CONTENT DIV
@@ -185,8 +195,11 @@ function writeFutureMissionsToDom() {
         savedMissions.splice(savedMissions.indexOf(dataID), 1);
         console.log(savedMissions);
         localStorage.setItem("savedMissions", savedMissions);
+        addFavoriteToList();
+
       }
     });
+
     // append card content div to CARD
     card.appendChild(cardContentDiv);
     cardContentDiv.classList.add('activator');
@@ -197,6 +210,8 @@ function writeFutureMissionsToDom() {
 
     // ADD TO DOM SECTION
     document.getElementById("nextFiveLaunchesList").append(column);
+
+
   }
 }
 
@@ -291,6 +306,24 @@ function addFavoriteToList() {
         futureMissions.results[i].id
       );
 
+         // CLICK HANDLER!!!!!!!!!!!!!!!!!!
+    addFavoriteIcon.addEventListener("click", function () {
+      // alert(this.getAttribute('data-launch-id'));
+      dataID = this.getAttribute("data-launch-id");
+      // console.log(dataID);
+      if (this.textContent == "add") {
+        this.textContent = "remove";
+        storeUniqueDataID();
+      } else {
+        this.textContent = "add";
+        savedMissions.splice(savedMissions.indexOf(dataID), 1);
+        console.log(savedMissions);
+        localStorage.setItem("savedMissions", savedMissions);
+        addFavoriteToList();
+        writeFutureMissionsToDom();
+      }
+    });
+
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
@@ -318,7 +351,6 @@ function addFavoriteToList() {
       // ADD TO DOM SECTION
       document.getElementById("test3").append(column);
 
-    } else {
     }
   }
 }
