@@ -339,6 +339,8 @@ function addFavoriteToList() {
 
 var startDate = moment();
 var endDate = moment().add(365, "days");
+var companies = "";
+var cities = "";
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
 
@@ -346,11 +348,31 @@ var endDate = moment().add(365, "days");
 
 // Search Launches
 function displayLaunches(response) {
-  var results = response.data.results.filter(function (launch) {
-    return moment(launch.net).isBetween(startDate, endDate);
+  var results = response.data.results;
+  var citiesFilterHTML = `<option value="" disabled selected></option>`;
+  for (i = 0; i < results.length; i++) {
+    citiesFilterHTML += `<option>${results[i].pad.location.name}</option>`;
+  }
+
+  var companyFilterHTML = `<option value="" disabled selected></option>`;
+  for (i = 0; i < results.length; i++) {
+    companyFilterHTML += `<option>${results[i].launch_service_provider.name}</option>`;
+  }
+
+  document.querySelector("#company").innerHTML = companyFilterHTML;
+  document.querySelector("#cities").innerHTML = citiesFilterHTML;
+
+  results = results.filter(function (launch) {
+    return (
+      (companies == launch.launch_service_provider.name || companies == "") &&
+      (cities == launch.pad.location.name || cities == "") &&
+      (startDate == "" ||
+        moment(launch.net).isBetween(moment(startDate), moment(endDate)))
+    );
   });
+
   var searchHTML = ``;
-  for (i = 0; i < Math.min(results.length, 8); i++) {
+  for (i = 0; i < results.length; i++) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
@@ -376,7 +398,7 @@ function displayLaunches(response) {
     elements[i].addEventListener("click", saveLaunchHandler);
   }
 
-  for (i = 0; i < Math.min(results.length, 8); i++) {
+  for (i = 0; i < results.length; i++) {
     searchHTML += getWeather(results[i]);
   }
 }
@@ -423,7 +445,7 @@ searchInfo();
 
 // Search weather
 
-// var apiKey = "2a980a820d1b255b9609b3f0f671cc24";
+// var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
@@ -432,8 +454,6 @@ searchInfo();
 //   var lon = launchInfo.pad.longitude;
 
 //   function showWeather(response) {
-//     console.log(response);
-
 //     var weatherElement = document.querySelector(
 //       "#search" + launchInfo.id + " .weather"
 //     );
@@ -448,8 +468,10 @@ searchInfo();
 // Function to filter date
 function handleFilterSearch(event) {
   event.preventDefault();
-  startDate = moment(document.querySelector("#startDate").value);
-  endDate = moment(document.querySelector("#endDate").value);
+  startDate = document.querySelector("#startDate").value;
+  endDate = document.querySelector("#endDate").value;
+  cities = document.querySelector("#cities").value;
+  companies = document.querySelector("#company").value;
   searchInfo();
 }
 
