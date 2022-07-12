@@ -191,10 +191,7 @@ function writeFutureMissionsToDom() {
     cardImage.appendChild(cardTitleSpan);
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
-    cardTitleSpan.setAttribute(
-      "data-index-id",
-      i
-    );
+    cardTitleSpan.setAttribute("data-index-id", i);
     cardImage.appendChild(cardTitleSpanLink);
     // append text to trigger icon to i element
     cardTitleSpanLink.appendChild(addFavoriteIcon);
@@ -301,7 +298,8 @@ function addFavoriteToList() {
 
       cardTitleSpan.appendChild(cardTitleTextNode);
       cardTitleSpan.setAttribute(
-        "data-launch-id", futureMissions.results[i].id
+        "data-launch-id",
+        futureMissions.results[i].id
       );
       // append a icon div
       cardImage.appendChild(cardTitleSpanLink);
@@ -539,11 +537,11 @@ function launchComponent(launchInfo) {
 // Call function to show upcoming launches
 searchInfo();
 
-//// Key for weatherAPI
+// Key for weatherAPI
 
 // var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-//// Function to extract weather
+// // Function to extract weather
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
 //   var futuredate = moment(date).format("X");
@@ -583,28 +581,26 @@ function writeModal(LaunchID) {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
-
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    console.log(data);
-    mLaunch = data;
-    mTitle = mLaunch.name;
-    mDescription = mLaunch.mission.description;
-    mImage = mLaunch.image;
-    mCompany = mLaunch.launch_service_provider.name;
-    // var mWeather =
-    mTimeDiff = moment(
-      mLaunch.window_start
-    ).fromNow();
-    document.getElementById("modal-title").innerText = mTitle;
-    document.getElementById("modal-company").innerText = mCompany;
-    document.getElementById("modal-desc").innerText = mDescription;
-    document.getElementById("modal-img").src = mImage;
-    // document.getElementById("modal-weather").textContent = mWeather;
-    document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-  }).then(function () {
-    Dinstance.open();
-  });
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      mLaunch = data;
+      mTitle = mLaunch.name;
+      mDescription = mLaunch.mission.description;
+      mImage = mLaunch.image;
+      mCompany = mLaunch.launch_service_provider.name;
+      // var mWeather =
+      mTimeDiff = moment(mLaunch.window_start).fromNow();
+      document.getElementById("modal-title").innerText = mTitle;
+      document.getElementById("modal-company").innerText = mCompany;
+      document.getElementById("modal-desc").innerText = mDescription;
+      document.getElementById("modal-img").src = mImage;
+      // document.getElementById("modal-weather").textContent = mWeather;
+      document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+    })
+    .then(function () {
+      Dinstance.open();
+    });
 }
-
