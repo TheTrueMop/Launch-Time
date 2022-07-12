@@ -213,7 +213,7 @@ function writeFutureMissionsToDom() {
       }
     });
     // Modal Listener
-    cardImage.addEventListener("click", function () {
+    cardTitleSpanLink.addEventListener("click", function () {
       writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
@@ -317,7 +317,9 @@ function addFavoriteToList() {
           storeUniqueDataID();
         }
       });
-
+      cardTitleSpanLink.addEventListener("click", function () {
+        writeModal(futureMissions.results[i].id);
+      });
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
