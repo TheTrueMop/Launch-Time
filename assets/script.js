@@ -368,18 +368,30 @@ function handleLaunchTimers() {
   for (i = 0; i < futureMissions['results'].length - 5; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
   }
-  for (i = 0; i < 90; i++) {
-    var now = moment(),
-      end = moment(launchTimerArray[i]),
+  for (i = 0; i < 10; i++) {
+    var now = moment().utc(),
+      end = moment(launchTimerArray[i]).utc(),
       secondsUntilLaunch = end.diff(now, "seconds");
+    if (Math.sign(secondsUntilLaunch) == 1) {
+
+    } else {
+      console.log(secondsUntilLaunch)
+    }
+
     var theDuration = moment.duration(secondsUntilLaunch, 'seconds');
+
     launchTimesInSeconds.push(theDuration);
 
-    seconds = theDuration / 1000;
-    minutes = seconds / 60;
-    hours = minutes / 60;
+    // console.log("now: " + now);
+    // console.log("end: " + end);
+
+    var seconds = theDuration / 1000;
+    var minutes = seconds / 60;
+    var hours = minutes / 60;
+    // console.log('minutes');
+    // console.log(minutes);
     hours = hours + 5;
-    days = hours / 24;
+    var days = hours / 24;
 
     seconds = seconds % 60;
     minutes = minutes % 60;
@@ -452,7 +464,7 @@ function displayLaunches(response) {
   document.querySelector("#searchresults").innerHTML = searchHTML;
   // Modal listeners
   for (i = 0; i < results.length; i++) {
-    document.getElementById("search"+results[i].id).addEventListener("click", function () {
+    document.getElementById("search" + results[i].id).addEventListener("click", function () {
       realid = this.id.split("search")[1];
       writeModal(realid);
     });
@@ -564,7 +576,7 @@ findLaunch.addEventListener("click", handleFilterSearch);
 // Dawson Code BELOW this line -----------------------------------------------------------------------
 
 
-function writeModal(LaunchID){
+function writeModal(LaunchID) {
   fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
