@@ -51,6 +51,7 @@ var mDescription;
 var mCompany;
 var mTimeDiff;
 var mWeather;
+var mProgram;
 
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
@@ -58,13 +59,12 @@ function storeUniqueDataID() {
     localStorage.setItem("savedMissions", savedMissions);
     writeFutureMissionsToDom();
     addFavoriteToList();
-
   } else {
     savedMissions.push(dataID);
     localStorage.setItem("savedMissions", savedMissions);
     console.log("ID SAVED FROM FUTURE LAUNCHES");
     // console.log('ID SAVED FROM FUTURE LAUNCHES');
-    writeFutureMissionsToDom()
+    writeFutureMissionsToDom();
     addFavoriteToList();
   }
 }
@@ -81,11 +81,14 @@ function getFutureLaunches() {
       futureMissions = data;
       // console.log(data);
       // console.log(futureMissions.results);
-    }).then(function () {
+    })
+    .then(function () {
       writeFutureMissionsToDom();
-    }).then(function () {
+    })
+    .then(function () {
       addFavoriteToList();
-    }).then(function () {
+    })
+    .then(function () {
       setInterval(handleLaunchTimers, 1000);
     });
 }
@@ -97,7 +100,6 @@ function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
   for (let i = 0; i < 90; i++) {
-
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -190,10 +192,7 @@ function writeFutureMissionsToDom() {
     cardImage.appendChild(cardTitleSpan);
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
-    cardTitleSpan.setAttribute(
-      "data-index-id",
-      i
-    );
+    cardTitleSpan.setAttribute("data-index-id", i);
     cardImage.appendChild(cardTitleSpanLink);
     // append text to trigger icon to i element
     cardTitleSpanLink.appendChild(addFavoriteIcon);
@@ -237,7 +236,6 @@ function writeFutureMissionsToDom() {
 }
 
 function addFavoriteToList() {
-
   var favoriteButtons = document.querySelectorAll(".favoriteButtons");
   var clearFuture = document.querySelector(".clearFuture");
   clearFuture.replaceChildren();
@@ -301,7 +299,8 @@ function addFavoriteToList() {
 
       cardTitleSpan.appendChild(cardTitleTextNode);
       cardTitleSpan.setAttribute(
-        "data-launch-id", futureMissions.results[i].id
+        "data-launch-id",
+        futureMissions.results[i].id
       );
       // append a icon div
       cardImage.appendChild(cardTitleSpanLink);
@@ -320,7 +319,6 @@ function addFavoriteToList() {
         if (this.textContent == "add") {
           this.textContent = "remove";
           storeUniqueDataID();
-
         } else {
           this.textContent = "add";
           storeUniqueDataID();
@@ -362,10 +360,9 @@ function addFavoriteToList() {
 var launchTimesInSeconds = [];
 
 function handleLaunchTimers() {
-
   var timerDivReady = document.querySelectorAll(".timer-div");
   timerDivReady.textContent = " ";
-  for (i = 0; i < futureMissions['results'].length - 5; i++) {
+  for (i = 0; i < futureMissions["results"].length - 5; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
   }
   for (i = 0; i < futureMissions['results'].length; i++) {
@@ -429,7 +426,6 @@ function handleLaunchTimers() {
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
 
-
 // Global Variables
 var startDate = moment();
 var endDate = moment().add(365, "days");
@@ -440,16 +436,30 @@ var cities = "";
 
 function displayLaunches(response) {
   var results = response.data.results;
+
+  var citiesOptions = [
+    ...new Set(
+      results.map(function (launch) {
+        return launch.pad.location.name;
+      })
+    ),
+  ];
+  var companyOptions = [
+    ...new Set(
+      results.map(function (launch) {
+        return launch.launch_service_provider.name;
+      })
+    ),
+  ];
   var citiesFilterHTML = `<option value="" disabled selected></option>`;
-  for (i = 0; i < results.length; i++) {
-    citiesFilterHTML += `<option>${results[i].pad.location.name}</option>`;
+  for (var i = 0; i < citiesOptions.length; i++) {
+    citiesFilterHTML += `<option>${citiesOptions[i]}</option>`;
   }
 
   var companyFilterHTML = `<option value="" disabled selected></option>`;
-  for (i = 0; i < results.length; i++) {
-    companyFilterHTML += `<option>${results[i].launch_service_provider.name}</option>`;
+  for (var i = 0; i < companyOptions.length; i++) {
+    companyFilterHTML += `<option>${companyOptions[i]}</option>`;
   }
-
   document.querySelector("#company").innerHTML = companyFilterHTML;
   document.querySelector("#cities").innerHTML = citiesFilterHTML;
 
@@ -491,21 +501,35 @@ function displayLaunches(response) {
     localStorage.setItem("savedMissions", savedMissions);
     addFavoriteToList();
   };
-
   var elements = document.querySelectorAll(".search-add-favorite i");
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener("click", saveLaunchHandler);
   }
 
+  // Modal listeners
+  var makeHandler = function displayModalHandler(id) {
+    return function () {
+      writeModal(id);
+    };
+  };
+
+  for (i = 0; i < results.length; i++) {
+    var id = results[i].id;
+    document
+      .querySelector("#search" + id + " .moreBtn")
+      .addEventListener("click", makeHandler(id));
+  }
+  // Modal listeners
+
   for (i = 0; i < results.length; i++) {
     searchHTML += getWeather(results[i]);
   }
-
 }
 
 // Function to search launches inside API
 function searchInfo() {
-  var apiURL = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/";
+  var apiURL =
+    "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=100";
   axios.get(apiURL).then(displayLaunches);
 }
 
@@ -520,16 +544,18 @@ function launchComponent(launchInfo) {
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  )}</span></p>
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
         <p>Weather: <span class="weather"></span></p>
-      </div> 
+        <button class="moreBtn" id="moreBtn">More</button>
+      </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
-    }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
@@ -540,11 +566,11 @@ function launchComponent(launchInfo) {
 // Call function to show upcoming launches
 searchInfo();
 
-//// Key for weatherAPI
+// Key for weatherAPI
 
 // var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-//// Function to extract weather
+// // Function to extract weather
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
 //   var futuredate = moment(date).format("X");
@@ -555,12 +581,11 @@ searchInfo();
 //     var weatherElement = document.querySelector(
 //       "#search" + launchInfo.id + " .weather"
 //     );
-
 //     weatherElement.textContent = response.data.days[0].description;
 //   }
 
-//   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-//   axios.get(apiUrl).then(showWeather);
+//   var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+//   axios.get(apiUrlWeather).then(showWeather);
 // }
 
 // Function to filter date, cities and companies
@@ -577,9 +602,7 @@ function handleFilterSearch(event) {
 var findLaunch = document.querySelector("#findBtn");
 findLaunch.addEventListener("click", handleFilterSearch);
 
-
 // Dawson Code BELOW this line -----------------------------------------------------------------------
-
 
 function writeModal(LaunchID) {
   fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
@@ -589,20 +612,32 @@ function writeModal(LaunchID) {
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
-    console.log(data);
+    //console.log(data);
     mLaunch = data;
     mTitle = mLaunch.name;
     mDescription = mLaunch.mission.description;
     mImage = mLaunch.image;
     mCompany = mLaunch.launch_service_provider.name;
-    // var mWeather =
     mTimeDiff = moment(
       mLaunch.window_start
     ).fromNow();
-    document.getElementById("modal-title").innerText = mTitle;
-    document.getElementById("modal-company").innerText = mCompany;
-    document.getElementById("modal-desc").innerText = mDescription;
+    mProgram = mLaunch.launch_service_provider.country_code;
+    mType = mLaunch.mission.type;
+    mProgramDesc = mLaunch.launch_service_provider.description;
+    mSucc = mLaunch.launch_service_provider.successful_launches;
+    mFail = mLaunch.launch_service_provider.failed_launches;
+    // Launch Location
+    mLocation = mLaunch.pad.location.name;
     document.getElementById("modal-img").src = mImage;
+    document.getElementById("modal-title").innerText = mTitle;
+    document.getElementById("modal-program").innerText = "Location: " + mProgram;
+    document.getElementById("modal-type").innerText = "Type: " + mType;
+    document.getElementById("modal-desc").innerText = mDescription;
+    document.getElementById("modal-company").innerText = mCompany;
+    document.getElementById("modal-location").innerText = "Location: " + mLocation;
+    document.getElementById("modal-programDesc").innerText = mProgramDesc;
+    document.getElementById("modal-succLaunches").innerText = "Successful Launches: " + mSucc;
+    document.getElementById("modal-failLaunches").innerText = "Failed Launches:     " + mFail;
     // document.getElementById("modal-weather").textContent = mWeather;
     document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
   }).then(function () {
