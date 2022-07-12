@@ -208,4 +208,7 @@ input {
   .navText {
     display: none;
   }
+  .modal {
+    text-size-adjust: 60%;
+  }
 }
