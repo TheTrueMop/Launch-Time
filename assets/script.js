@@ -189,7 +189,6 @@ function writeFutureMissionsToDom() {
     cardImage.appendChild(cardImageURL);
     // APPEND CARD TITLE
     cardImage.appendChild(cardTitleSpan);
-
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
     cardImage.appendChild(cardTitleSpanLink);
@@ -214,7 +213,10 @@ function writeFutureMissionsToDom() {
       }
     });
     // Modal Listener
-    cardImage.addEventListener("click", function () {
+    cardImage.children[0].addEventListener("click", function () {
+      writeModal(futureMissions.results[i].id);
+    });
+    cardImage.children[1].addEventListener("click", function () {
       writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
@@ -294,6 +296,10 @@ function addFavoriteToList() {
       cardImage.appendChild(cardTitleSpan);
 
       cardTitleSpan.appendChild(cardTitleTextNode);
+      cardTitleSpan.setAttribute(
+        "data-launch-id",
+        futureMissions.results[i].id
+      );
       // append a icon div
       cardImage.appendChild(cardTitleSpanLink);
       // append text to trigger icon to i element
@@ -316,7 +322,10 @@ function addFavoriteToList() {
           storeUniqueDataID();
         }
       });
-
+      cardTitleSpan.addEventListener("click", function () {
+        //console.log(this.getAttribute("data-launch-id"));
+        writeModal(this.getAttribute("data-launch-id"));
+      });
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
