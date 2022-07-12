@@ -79,7 +79,7 @@ function getFutureLaunches() {
     })
     .then(function (data) {
       futureMissions = data;
-      // console.log(data);
+      console.log(data);
       // console.log(futureMissions.results);
     })
     .then(function () {
@@ -108,6 +108,7 @@ function writeFutureMissionsToDom() {
     column.classList.add("m4");
     column.classList.add("s12");
     column.classList.add("cardBoxes");
+    column.setAttribute("data-index-timerid", i);
     // CARD DIV
     var card = document.createElement("div");
     card.classList.add("card");
@@ -152,7 +153,7 @@ function writeFutureMissionsToDom() {
     var cardContentDiv = document.createElement("div");
     cardContentDiv.classList.add("card-content");
     var cardContentDivTextNode = document.createTextNode(
-      futureMissions.results[i].window_start
+      futureMissions.results[i].status.name
     );
     cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -240,13 +241,13 @@ function addFavoriteToList() {
   var clearFuture = document.querySelector(".clearFuture");
   clearFuture.replaceChildren();
 
-  for (i = 0; i < futureMissions.results.length; i++) {
+  for (i = 0; i < futureMissions['results'].length; i++) {
     if (savedMissions.includes(futureMissions.results[i].id)) {
       var column = document.createElement("div");
       column.classList.add("col");
       column.classList.add("s12");
       column.classList.add("m4");
-
+      column.setAttribute("data-index-timerid", i);
       // CARD DIV
       var card = document.createElement("div");
       card.classList.add("card");
@@ -284,7 +285,7 @@ function addFavoriteToList() {
       var cardContentDiv = document.createElement("div");
       cardContentDiv.classList.add("card-content");
       var cardContentDivTextNode = document.createTextNode(
-        futureMissions.results[i].window_start
+        futureMissions.results[i].status.name
       );
       cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -362,21 +363,37 @@ var launchTimesInSeconds = [];
 function handleLaunchTimers() {
   var timerDivReady = document.querySelectorAll(".timer-div");
   timerDivReady.textContent = " ";
-  for (i = 0; i < futureMissions["results"].length - 5; i++) {
+
+  var doneTimerArea = document.querySelectorAll("div[data-index-timerid]");
+  // console.log(doneTimerArea);
+  var dataAttrTimerId;
+  for (i = 0; i < futureMissions["results"].length; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
+
+    // console.log("DATID: ");
+    // console.log(dataAttrTimerId);
   }
-  for (i = 0; i < 90; i++) {
-    var now = moment(),
-      end = moment(launchTimerArray[i]),
-      secondsUntilLaunch = end.diff(now, "seconds");
-    var theDuration = moment.duration(secondsUntilLaunch, "seconds");
+  for (i = 0; i < futureMissions['results'].length; i++) {
+    dataAttrTimerId = doneTimerArea[i].dataset.indexTimerid;
+    var now = moment().utc();
+    var end = moment(launchTimerArray[dataAttrTimerId]).utc();
+    var secondsUntilLaunch = end.diff(now);
+
+
+    var theDuration = moment.duration(secondsUntilLaunch);
+
     launchTimesInSeconds.push(theDuration);
 
-    seconds = theDuration / 1000;
-    minutes = seconds / 60;
-    hours = minutes / 60;
+    // console.log("now: " + now);
+    // console.log("end: " + end);
+
+    var seconds = theDuration / 1000;
+    var minutes = seconds / 60;
+    var hours = minutes / 60;
+    // console.log('minutes');
+    // console.log(minutes);
     hours = hours + 5;
-    days = hours / 24;
+    var days = hours / 24;
 
     seconds = seconds % 60;
     minutes = minutes % 60;
@@ -387,22 +404,33 @@ function handleLaunchTimers() {
     hours = Math.floor(hours);
     days = Math.floor(days);
 
-    seconds = seconds.toString().padStart(2, "0");
-    minutes = minutes.toString().padStart(2, "0");
-    hours = hours.toString().padStart(2, "0");
-    days = days.toString().padStart(2, "0");
+    if (Math.sign(minutes) !== 1) {
+      var theTime = "00:00:00:00";
+    } else {
+      // console.log(secondsUntilLaunch);
 
-    var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
-    // console.log(theTime);
+      seconds = seconds.toString().padStart(2, "0");
+      minutes = minutes.toString().padStart(2, "0");
+      hours = hours.toString().padStart(2, "0");
+      days = days.toString().padStart(2, "0");
 
-    //console.log("i break: " + i);
+
+
+      var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
+      // console.log(theTime);
+
+      //console.log("i break: " + i);
+
+    }
     timerDivReady[i].innerHTML = theTime;
   }
+
+
 }
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
 
-// Dustin's Code ABOVE this line---------------------------------------------------------------------
+
 
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
@@ -458,6 +486,14 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
+  // Modal listeners
+  for (i = 0; i < results.length; i++) {
+    document.getElementById("search" + results[i].id).addEventListener("click", function () {
+      realid = this.id.split("search")[1];
+      writeModal(realid);
+    });
+  }
+  // Modal listeners
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -517,8 +553,8 @@ function launchComponent(launchInfo) {
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
-          "dddd, MMMM Do YYYY, h:mm:ss a"
-        )}</span></p>
+    "dddd, MMMM Do YYYY, h:mm:ss a"
+  )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
@@ -526,9 +562,8 @@ function launchComponent(launchInfo) {
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
-          launchInfo.id
-        }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
+    }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
