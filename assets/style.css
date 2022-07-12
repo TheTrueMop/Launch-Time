@@ -145,7 +145,7 @@ input {
   background-color: black !important;
 }
 .card .card-image .card-title {
-  font-size: 2vw;
+  /* font-size: 2vw; */
 }
 .card-content {
   color: white;
