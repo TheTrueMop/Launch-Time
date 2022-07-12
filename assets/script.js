@@ -30,6 +30,8 @@ var missions;
 var missionsArray = [];
 var futureMissions;
 var datesArray = [];
+
+launchTimerArray = [];
 // -------------------
 
 // LAUNCH API BASE URLS
@@ -65,18 +67,18 @@ function getFutureLaunches() {
     redirect: "follow", // manual, *follow, error
   })
     .then(function (response) {
-    
       return response.json();
     })
     .then(function (data) {
-
       futureMissions = data;
+      // console.log(data);
+      // console.log(futureMissions.results);
     }).then(function () {
-
       writeFutureMissionsToDom();
     }).then(function () {
-
       addFavoriteToList();
+    }).then(function () {
+      setInterval(handleLaunchTimers, 1000);
     });
 }
 getFutureLaunches();
@@ -86,7 +88,9 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 90; i++) {
+
+    launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
     var column = document.createElement("div");
@@ -211,8 +215,6 @@ function writeFutureMissionsToDom() {
 
     // ADD TO DOM SECTION
     document.getElementById("nextFiveLaunchesList").append(column);
-
-
   }
 }
 
@@ -315,7 +317,7 @@ function addFavoriteToList() {
       var futureMissionDate =
         futureMissions.results[i].window_start.split("T")[0];
 
-      launchDate = futureMissionDate;
+      // launchDate = futureMissionDate;
       // console.log("start: " + launchDate);
       // datesArray.push(launchDate);
       // console.log(datesArray);
@@ -333,12 +335,59 @@ function addFavoriteToList() {
   }
 }
 
+var launchTimesInSeconds = [];
+
+function handleLaunchTimers() {
+
+  var timerDivReady = document.querySelectorAll(".timer-div");
+  timerDivReady.textContent = " ";
+  for (i = 0; i < futureMissions['results'].length - 5; i++) {
+    launchTimerArray.push(futureMissions.results[i].net);
+  }
+  for (i = 0; i < 90; i++) {
+    var now = moment(),
+      end = moment(launchTimerArray[i]),
+      secondsUntilLaunch = end.diff(now, "seconds");
+    var theDuration = moment.duration(secondsUntilLaunch, 'seconds');
+    launchTimesInSeconds.push(theDuration);
+
+    seconds = theDuration / 1000;
+    minutes = seconds / 60;
+    hours = minutes / 60;
+    hours = hours + 5;
+    days = hours / 24;
+
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    hours = hours % 24;
+
+    seconds = Math.floor(seconds);
+    minutes = Math.floor(minutes);
+    hours = Math.floor(hours);
+    days = Math.floor(days);
+
+    seconds = seconds.toString().padStart(2, "0");
+    minutes = minutes.toString().padStart(2, "0");
+    hours = hours.toString().padStart(2, "0");
+    days = days.toString().padStart(2, "0");
+
+
+
+    var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
+    // console.log(theTime);
+
+    console.log("i break: " + i);
+    timerDivReady[i].innerHTML = theTime;
+  }
+}
+
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
 
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
+
 
 // Global Variables
 var startDate = moment();
@@ -347,6 +396,7 @@ var companies = "";
 var cities = "";
 
 // Function to filter data by cities, companies and date
+
 function displayLaunches(response) {
   var results = response.data.results;
   var citiesFilterHTML = `<option value="" disabled selected></option>`;
@@ -428,9 +478,8 @@ function launchComponent(launchInfo) {
         <p>Weather: <span class="weather"></span></p>
       </div> 
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
-          launchInfo.id
-        }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
+    }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
