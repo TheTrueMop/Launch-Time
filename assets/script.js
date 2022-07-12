@@ -212,7 +212,10 @@ function writeFutureMissionsToDom() {
       }
     });
     // Modal Listener
-    cardTitleSpan.addEventListener("click", function () {
+    cardImage.children[0].addEventListener("click", function () {
+      writeModal(futureMissions.results[i].id);
+    });
+    cardImage.children[1].addEventListener("click", function () {
       writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
@@ -320,7 +323,7 @@ function addFavoriteToList() {
         }
       });
       cardTitleSpan.addEventListener("click", function () {
-        console.log(this.getAttribute("data-launch-id"));
+        //console.log(this.getAttribute("data-launch-id"));
         writeModal(this.getAttribute("data-launch-id"));
       });
       // append card content div to CARD
@@ -570,11 +573,13 @@ function writeModal(LaunchID){
     mTitle = mLaunch.name;
     mDescription = mLaunch.mission.description;
     mImage = mLaunch.image;
+    mCompany = mLaunch.launch_service_provider.name;
     // var mWeather =
     mTimeDiff = moment(
       mLaunch.window_start
     ).fromNow();
     document.getElementById("modal-title").innerText = mTitle;
+    document.getElementById("modal-company").innerText = mCompany;
     document.getElementById("modal-desc").innerText = mDescription;
     document.getElementById("modal-img").src = mImage;
     // document.getElementById("modal-weather").textContent = mWeather;
