@@ -45,6 +45,7 @@ var futureLaunchRequestURL =
 var dataID;
 
 // Modal Variables for Launches
+var mLaunch;
 var mTitle;
 var mDescription;
 var mCompany;
@@ -211,10 +212,9 @@ function writeFutureMissionsToDom() {
         storeUniqueDataID();
       }
     });
+    // Modal Listener
     cardImage.addEventListener("click", function () {
-      console.log("it works");
-      writeModal(futureMissions.results[i]);
-      Dinstance.open();
+      writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
     // append card content div to CARD
@@ -438,12 +438,14 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
+  // Modal listeners
   for (i = 0; i < results.length; i++) {
     document.getElementById("search"+results[i].id).addEventListener("click", function () {
-      writeModal(results[i]);
-      Dinstance.open();
+      realid = this.id.split("search")[1];
+      writeModal(realid);
     });
   }
+  // Modal listeners
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -550,18 +552,28 @@ findLaunch.addEventListener("click", handleFilterSearch);
 // Dawson Code BELOW this line -----------------------------------------------------------------------
 
 
-function writeModal(response){
-  console.log(response);
-  mTitle = response.name;
-  mDescription = response.mission.description;
-  mImage = response.image;
-  // var mWeather =
-  mTimeDiff = moment(
-    response.window_start
-  ).fromNow();
-  document.getElementById("modal-title").innerText = mTitle;
-  document.getElementById("modal-desc").innerText = mDescription;
-  document.getElementById("modal-img").src = mImage;
-  // document.getElementById("modal-weather").textContent = mWeather;
-  document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+function writeModal(LaunchID){
+  fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
+    method: "GET", //GET is the default.
+    credentials: "same-origin", // include, *same-origin, omit
+    redirect: "follow", // manual, *follow, error
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    mLaunch = data;
+    mTitle = mLaunch.name;
+    mDescription = mLaunch.mission.description;
+    mImage = mLaunch.image;
+    // var mWeather =
+    mTimeDiff = moment(
+      mLaunch.window_start
+    ).fromNow();
+    document.getElementById("modal-title").innerText = mTitle;
+    document.getElementById("modal-desc").innerText = mDescription;
+    document.getElementById("modal-img").src = mImage;
+    // document.getElementById("modal-weather").textContent = mWeather;
+    document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+  }).then(function () {
+    Dinstance.open();
+  });
 }
