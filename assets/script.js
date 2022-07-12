@@ -500,7 +500,8 @@ function displayLaunches(response) {
 
 // Function to search launches inside API
 function searchInfo() {
-  var apiURL = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/";
+  var apiURL =
+    "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=100";
   axios.get(apiURL).then(displayLaunches);
 }
 
@@ -552,12 +553,11 @@ searchInfo();
 //     var weatherElement = document.querySelector(
 //       "#search" + launchInfo.id + " .weather"
 //     );
-
 //     weatherElement.textContent = response.data.days[0].description;
 //   }
 
-//   var apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-//   axios.get(apiUrl).then(showWeather);
+//   var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+//   axios.get(apiUrlWeather).then(showWeather);
 // }
 
 // Function to filter date, cities and companies

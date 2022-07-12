@@ -156,9 +156,10 @@ input {
 .agencyImage {
   background-color: black !important;
 }
-.card .card-image .card-title {
-  /* font-size: 2vw; */
-}
+/* .card .card-image .card-title {
+  /* font-size: 2vw;
+ } */
+
 .card-content {
   color: white;
   opacity: 0.8;
