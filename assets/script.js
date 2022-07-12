@@ -368,24 +368,20 @@ function handleLaunchTimers() {
   for (i = 0; i < futureMissions['results'].length - 5; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
   }
-  for (i = 0; i < 10; i++) {
+  for (i = 0; i < futureMissions['results'].length; i++) {
     var now = moment().utc(),
       end = moment(launchTimerArray[i]).utc(),
-      secondsUntilLaunch = end.diff(now, "seconds");
-    if (Math.sign(secondsUntilLaunch) == 1) {
+      secondsUntilLaunch = end.diff(now);
 
-    } else {
-      console.log(secondsUntilLaunch)
-    }
 
-    var theDuration = moment.duration(secondsUntilLaunch, 'seconds');
+    var theDuration = moment.duration(secondsUntilLaunch);
 
     launchTimesInSeconds.push(theDuration);
 
     // console.log("now: " + now);
     // console.log("end: " + end);
 
-    var seconds = theDuration / 1000;
+    var seconds  = theDuration / 1000;
     var minutes = seconds / 60;
     var hours = minutes / 60;
     // console.log('minutes');
@@ -402,19 +398,28 @@ function handleLaunchTimers() {
     hours = Math.floor(hours);
     days = Math.floor(days);
 
-    seconds = seconds.toString().padStart(2, "0");
-    minutes = minutes.toString().padStart(2, "0");
-    hours = hours.toString().padStart(2, "0");
-    days = days.toString().padStart(2, "0");
+    if (Math.sign(minutes) !== 1) {
+      var theTime = "00:00:00:00";
+    } else {
+      console.log(secondsUntilLaunch)
 
+      seconds = seconds.toString().padStart(2, "0");
+      minutes = minutes.toString().padStart(2, "0");
+      hours = hours.toString().padStart(2, "0");
+      days = days.toString().padStart(2, "0");
+  
+  
+  
+      var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
+      // console.log(theTime);
+  
+      //console.log("i break: " + i);
 
-
-    var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
-    // console.log(theTime);
-
-    //console.log("i break: " + i);
+    }
     timerDivReady[i].innerHTML = theTime;
-  }
+    }
+
+
 }
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
