@@ -44,6 +44,13 @@ var futureLaunchRequestURL =
 // GET FUTURE LAUNCHES FROM LAUNCH API
 var dataID;
 
+// Modal Variables for Launches
+var mTitle;
+var mDescription;
+var mCompany;
+var mTimeDiff;
+var mWeather;
+
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
     savedMissions.splice(savedMissions.indexOf(dataID), 1);
@@ -203,6 +210,11 @@ function writeFutureMissionsToDom() {
         this.textContent = "add";
         storeUniqueDataID();
       }
+    });
+    cardImage.addEventListener("click", function () {
+      console.log("it works");
+      writeModal(futureMissions.results[i]);
+      Dinstance.open();
     });
     //-------------------------------------------
     // append card content div to CARD
@@ -376,7 +388,7 @@ function handleLaunchTimers() {
     var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
     // console.log(theTime);
 
-    console.log("i break: " + i);
+    //console.log("i break: " + i);
     timerDivReady[i].innerHTML = theTime;
   }
 }
@@ -426,6 +438,12 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
+  for (i = 0; i < results.length; i++) {
+    document.getElementById("search"+results[i].id).addEventListener("click", function () {
+      writeModal(results[i]);
+      Dinstance.open();
+    });
+  }
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -451,6 +469,7 @@ function displayLaunches(response) {
   for (i = 0; i < results.length; i++) {
     searchHTML += getWeather(results[i]);
   }
+
 }
 
 // Function to search launches inside API
@@ -526,3 +545,23 @@ function handleFilterSearch(event) {
 // Btn Event listener
 var findLaunch = document.querySelector("#findBtn");
 findLaunch.addEventListener("click", handleFilterSearch);
+
+
+// Dawson Code BELOW this line -----------------------------------------------------------------------
+
+
+function writeModal(response){
+  console.log(response);
+  mTitle = response.name;
+  mDescription = response.mission.description;
+  mImage = response.image;
+  // var mWeather =
+  mTimeDiff = moment(
+    response.window_start
+  ).fromNow();
+  document.getElementById("modal-title").innerText = mTitle;
+  document.getElementById("modal-desc").innerText = mDescription;
+  document.getElementById("modal-img").src = mImage;
+  // document.getElementById("modal-weather").textContent = mWeather;
+  document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+}
