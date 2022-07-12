@@ -51,6 +51,7 @@ var mDescription;
 var mCompany;
 var mTimeDiff;
 var mWeather;
+var mProgram;
 
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
@@ -583,20 +584,32 @@ function writeModal(LaunchID) {
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
-    console.log(data);
+    //console.log(data);
     mLaunch = data;
     mTitle = mLaunch.name;
     mDescription = mLaunch.mission.description;
     mImage = mLaunch.image;
     mCompany = mLaunch.launch_service_provider.name;
-    // var mWeather =
     mTimeDiff = moment(
       mLaunch.window_start
     ).fromNow();
-    document.getElementById("modal-title").innerText = mTitle;
-    document.getElementById("modal-company").innerText = mCompany;
-    document.getElementById("modal-desc").innerText = mDescription;
+    mProgram = mLaunch.launch_service_provider.country_code;
+    mType = mLaunch.mission.type;
+    mProgramDesc = mLaunch.launch_service_provider.description;
+    mSucc = mLaunch.launch_service_provider.successful_launches;
+    mFail = mLaunch.launch_service_provider.failed_launches;
+    // Launch Location
+    mLocation = mLaunch.pad.location.name;
     document.getElementById("modal-img").src = mImage;
+    document.getElementById("modal-title").innerText = mTitle;
+    document.getElementById("modal-program").innerText = "Location: " + mProgram;
+    document.getElementById("modal-type").innerText = "Type: " + mType;
+    document.getElementById("modal-desc").innerText = mDescription;
+    document.getElementById("modal-company").innerText = mCompany;
+    document.getElementById("modal-location").innerText = "Location: " + mLocation;
+    document.getElementById("modal-programDesc").innerText = mProgramDesc;
+    document.getElementById("modal-succLaunches").innerText = "Successful Launches: " + mSucc;
+    document.getElementById("modal-failLaunches").innerText = "Failed Launches:     " + mFail;
     // document.getElementById("modal-weather").textContent = mWeather;
     document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
   }).then(function () {
