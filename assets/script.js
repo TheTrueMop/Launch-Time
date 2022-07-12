@@ -58,13 +58,12 @@ function storeUniqueDataID() {
     localStorage.setItem("savedMissions", savedMissions);
     writeFutureMissionsToDom();
     addFavoriteToList();
-
   } else {
     savedMissions.push(dataID);
     localStorage.setItem("savedMissions", savedMissions);
     console.log("ID SAVED FROM FUTURE LAUNCHES");
     // console.log('ID SAVED FROM FUTURE LAUNCHES');
-    writeFutureMissionsToDom()
+    writeFutureMissionsToDom();
     addFavoriteToList();
   }
 }
@@ -81,11 +80,14 @@ function getFutureLaunches() {
       futureMissions = data;
       // console.log(data);
       // console.log(futureMissions.results);
-    }).then(function () {
+    })
+    .then(function () {
       writeFutureMissionsToDom();
-    }).then(function () {
+    })
+    .then(function () {
       addFavoriteToList();
-    }).then(function () {
+    })
+    .then(function () {
       setInterval(handleLaunchTimers, 1000);
     });
 }
@@ -97,7 +99,6 @@ function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
   for (let i = 0; i < 90; i++) {
-
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -233,7 +234,6 @@ function writeFutureMissionsToDom() {
 }
 
 function addFavoriteToList() {
-
   var favoriteButtons = document.querySelectorAll(".favoriteButtons");
   var clearFuture = document.querySelector(".clearFuture");
   clearFuture.replaceChildren();
@@ -316,7 +316,6 @@ function addFavoriteToList() {
         if (this.textContent == "add") {
           this.textContent = "remove";
           storeUniqueDataID();
-
         } else {
           this.textContent = "add";
           storeUniqueDataID();
@@ -358,17 +357,16 @@ function addFavoriteToList() {
 var launchTimesInSeconds = [];
 
 function handleLaunchTimers() {
-
   var timerDivReady = document.querySelectorAll(".timer-div");
   timerDivReady.textContent = " ";
-  for (i = 0; i < futureMissions['results'].length - 5; i++) {
+  for (i = 0; i < futureMissions["results"].length - 5; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
   }
   for (i = 0; i < 90; i++) {
     var now = moment(),
       end = moment(launchTimerArray[i]),
       secondsUntilLaunch = end.diff(now, "seconds");
-    var theDuration = moment.duration(secondsUntilLaunch, 'seconds');
+    var theDuration = moment.duration(secondsUntilLaunch, "seconds");
     launchTimesInSeconds.push(theDuration);
 
     seconds = theDuration / 1000;
@@ -391,8 +389,6 @@ function handleLaunchTimers() {
     hours = hours.toString().padStart(2, "0");
     days = days.toString().padStart(2, "0");
 
-
-
     var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
     // console.log(theTime);
 
@@ -408,7 +404,6 @@ function handleLaunchTimers() {
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
 
-
 // Global Variables
 var startDate = moment();
 var endDate = moment().add(365, "days");
@@ -419,16 +414,30 @@ var cities = "";
 
 function displayLaunches(response) {
   var results = response.data.results;
+
+  var citiesOptions = [
+    ...new Set(
+      results.map(function (launch) {
+        return launch.pad.location.name;
+      })
+    ),
+  ];
+  var companyOptions = [
+    ...new Set(
+      results.map(function (launch) {
+        return launch.launch_service_provider.name;
+      })
+    ),
+  ];
   var citiesFilterHTML = `<option value="" disabled selected></option>`;
-  for (i = 0; i < results.length; i++) {
-    citiesFilterHTML += `<option>${results[i].pad.location.name}</option>`;
+  for (var i = 0; i < citiesOptions.length; i++) {
+    citiesFilterHTML += `<option>${citiesOptions[i]}</option>`;
   }
 
   var companyFilterHTML = `<option value="" disabled selected></option>`;
-  for (i = 0; i < results.length; i++) {
-    companyFilterHTML += `<option>${results[i].launch_service_provider.name}</option>`;
+  for (var i = 0; i < companyOptions.length; i++) {
+    companyFilterHTML += `<option>${companyOptions[i]}</option>`;
   }
-
   document.querySelector("#company").innerHTML = companyFilterHTML;
   document.querySelector("#cities").innerHTML = citiesFilterHTML;
 
@@ -446,14 +455,6 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
-  // Modal listeners
-  for (i = 0; i < results.length; i++) {
-    document.getElementById("search"+results[i].id).addEventListener("click", function () {
-      realid = this.id.split("search")[1];
-      writeModal(realid);
-    });
-  }
-  // Modal listeners
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -470,16 +471,29 @@ function displayLaunches(response) {
     localStorage.setItem("savedMissions", savedMissions);
     addFavoriteToList();
   };
-
   var elements = document.querySelectorAll(".search-add-favorite i");
   for (var i = 0; i < elements.length; i++) {
     elements[i].addEventListener("click", saveLaunchHandler);
   }
 
+  // Modal listeners
+  var makeHandler = function displayModalHandler(id) {
+    return function () {
+      writeModal(id);
+    };
+  };
+
+  for (i = 0; i < results.length; i++) {
+    var id = results[i].id;
+    document
+      .querySelector("#search" + id + " .moreBtn")
+      .addEventListener("click", makeHandler(id));
+  }
+  // Modal listeners
+
   for (i = 0; i < results.length; i++) {
     searchHTML += getWeather(results[i]);
   }
-
 }
 
 // Function to search launches inside API
@@ -499,16 +513,18 @@ function launchComponent(launchInfo) {
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  )}</span></p>
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
         <p>Weather: <span class="weather"></span></p>
-      </div> 
+        <button class="moreBtn" id="moreBtn">More</button>
+      </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
-    }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
@@ -556,15 +572,14 @@ function handleFilterSearch(event) {
 var findLaunch = document.querySelector("#findBtn");
 findLaunch.addEventListener("click", handleFilterSearch);
 
-
 // Dawson Code BELOW this line -----------------------------------------------------------------------
 
-
-function writeModal(LaunchID){
+function writeModal(LaunchID) {
   fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
+
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
@@ -588,3 +603,4 @@ function writeModal(LaunchID){
     Dinstance.open();
   });
 }
+
