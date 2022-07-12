@@ -90,6 +90,9 @@ input {
 }
 
 /* search lauches content style */
+.customIconBigScreen {
+  text-align: right;
+}
 .customCard {
   text-align: left;
   background-color: rgb(0, 0, 0, 0.6);
