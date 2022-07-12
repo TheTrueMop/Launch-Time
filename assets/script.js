@@ -188,7 +188,6 @@ function writeFutureMissionsToDom() {
     cardImage.appendChild(cardImageURL);
     // APPEND CARD TITLE
     cardImage.appendChild(cardTitleSpan);
-
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
     cardImage.appendChild(cardTitleSpanLink);
@@ -213,7 +212,7 @@ function writeFutureMissionsToDom() {
       }
     });
     // Modal Listener
-    cardTitleSpanLink.addEventListener("click", function () {
+    cardTitleSpan.addEventListener("click", function () {
       writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
@@ -294,6 +293,9 @@ function addFavoriteToList() {
       cardImage.appendChild(cardTitleSpan);
 
       cardTitleSpan.appendChild(cardTitleTextNode);
+      cardTitleSpan.setAttribute(
+        "data-launch-id", futureMissions.results[i].id
+      );
       // append a icon div
       cardImage.appendChild(cardTitleSpanLink);
       // append text to trigger icon to i element
@@ -317,8 +319,9 @@ function addFavoriteToList() {
           storeUniqueDataID();
         }
       });
-      cardTitleSpanLink.addEventListener("click", function () {
-        writeModal(futureMissions.results[i].id);
+      cardTitleSpan.addEventListener("click", function () {
+        console.log(this.getAttribute("data-launch-id"));
+        writeModal(this.getAttribute("data-launch-id"));
       });
       // append card content div to CARD
       card.appendChild(cardContentDiv);
@@ -562,6 +565,7 @@ function writeModal(LaunchID){
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
+    console.log(data);
     mLaunch = data;
     mTitle = mLaunch.name;
     mDescription = mLaunch.mission.description;
