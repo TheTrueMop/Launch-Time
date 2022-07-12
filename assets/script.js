@@ -503,18 +503,18 @@ setTimeout(addFavoriteToList, 3000);
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
 
-// -----> Search Lauches section (Itzel's)
+// Dustin's Code ABOVE this line---------------------------------------------------------------------
 
+// -----> Search Lauches page (Itzel's)
+// Itzel's Code BELOW this line -----------------------------------------------------------------------
+
+// Global Variables
 var startDate = moment();
 var endDate = moment().add(365, "days");
 var companies = "";
 var cities = "";
 
-// Dustin's Code ABOVE this line---------------------------------------------------------------------
-
-// Itzel's Code BELOW this line -----------------------------------------------------------------------
-
-// Search Launches
+// Function to filter data by cities, companies and date
 function displayLaunches(response) {
   var results = response.data.results;
   var citiesFilterHTML = `<option value="" disabled selected></option>`;
@@ -571,15 +571,13 @@ function displayLaunches(response) {
   }
 }
 
+// Function to search launches inside API
 function searchInfo() {
   var apiURL = "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/";
   axios.get(apiURL).then(displayLaunches);
 }
-//  var searchElement = document.querySelector("#searchresults");
-//  searchElement.innerHTML = searchHTML;
 
-// for ...
-//    htmlText += launchComponent(array[i])
+//   Function to insert last launches as HTML in Search Launches page
 function launchComponent(launchInfo) {
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
@@ -608,13 +606,14 @@ function launchComponent(launchInfo) {
   return searchHTML;
 }
 
-// Call to show 8 upcoming launches
+// Call function to show upcoming launches
 searchInfo();
 
-// Search weather
+//// Key for weatherAPI
 
 // var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
+//// Function to extract weather
 // function getWeather(launchInfo) {
 //   var date = launchInfo.net;
 //   var futuredate = moment(date).format("X");
@@ -633,7 +632,7 @@ searchInfo();
 //   axios.get(apiUrl).then(showWeather);
 // }
 
-// Function to filter date
+// Function to filter date, cities and companies
 function handleFilterSearch(event) {
   event.preventDefault();
   startDate = document.querySelector("#startDate").value;
