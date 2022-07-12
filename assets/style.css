@@ -84,13 +84,15 @@ input {
 .caret {
   display: none;
 }
-
 #cities,
 #company {
   display: block;
 }
 
 /* search lauches content style */
+.customIconBigScreen {
+  text-align: right;
+}
 .customCard {
   text-align: left;
   background-color: rgb(0, 0, 0, 0.6);
@@ -102,7 +104,6 @@ input {
   font-size: 15px;
   color: var(--secondary-text-color);
 }
-
 .agencyImg {
   border-radius: 20px;
   width: 100%;
@@ -116,7 +117,6 @@ input {
 .saveBtn:hover {
   opacity: 70%;
 }
-
 .findBtn {
   border-radius: 50%;
   padding-top: 18px;
@@ -133,44 +133,27 @@ input {
   margin-bottom: 10px;
   color: green;
 }
-
 #nextFiveLaunchesList,
 #lastFiveLaunchesList {
   margin-bottom: 10px;
 }
-
-/* .shipImages {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    border: 1px solid white;
-} */
-
 .agencyImage img {
   max-height: 170px;
   min-height: 170px;
-  /* max-width: 170px;
-min-width: 170px; */
 }
-
 .agencyImage {
   background-color: black !important;
-  /* opacity: 0.8; */
 }
-
 .card .card-image .card-title {
   /* font-size: 2vw; */
 }
-
 .card-content {
   color: white;
   opacity: 0.8;
 }
-
 .card .card-reveal {
   background-color: black;
 }
-
 .timer-div {
   color: white;
   text-align: center;
@@ -188,9 +171,8 @@ min-width: 170px; */
 .modal .modal-footer a {
   color: var(--secondary-text-color);
 }
-/* Dawson End of CSS*/
 
-/* Media queries */
+/* ---> Media queries */
 
 @media (max-width: 600px) {
   .agencyImg {
@@ -201,7 +183,7 @@ min-width: 170px; */
     line-height: 25px;
   }
   .customIconSearch {
-    text-align: center;
+    text-align: right;
     margin-bottom: 15px;
   }
   .row {
