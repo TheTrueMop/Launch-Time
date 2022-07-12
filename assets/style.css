@@ -99,11 +99,8 @@ input {
 }
 .customCard p {
   line-height: 30px;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--secondary-text-color);
-}
-.customCard p span {
-  color: var(--primary-text-color);
 }
 
 .agencyImg {
@@ -114,7 +111,19 @@ input {
 .saveBtn {
   background-color: red;
   border-radius: 50%;
-  padding: 12px 3px 1px 3px;
+  padding: 15px 5px 3px 5px;
+}
+.saveBtn:hover {
+  opacity: 70%;
+}
+
+.findBtn {
+  border-radius: 50%;
+  padding-top: 18px;
+}
+.findBtn:hover {
+  background-color: var(--secondary-text-color);
+  color: var(--primary-color);
 }
 
 /* ---> Upcoming Launches style */
@@ -182,25 +191,30 @@ min-width: 170px; */
 
 /* Media queries */
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
   .agencyImg {
     display: none;
   }
   .customCard p {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 25px;
   }
-  .customCard {
-    padding-right: 18px;
+  .customIconSearch {
+    text-align: center;
+    margin-bottom: 15px;
   }
-}
-
-@media (max-width: 980px) {
-  .findBtn span {
+  .row {
+    margin-bottom: 2px;
+  }
+  .row .col {
+    margin-bottom: 15px;
+  }
+  .navText {
     display: none;
   }
   .findBtn {
-    border-radius: 50%;
-    padding-top: 18px;
+    color: var(--secondary-text-color);
+    background-color: var(--secondary-color);
+    transition: 2ms;
   }
 }
