@@ -189,7 +189,6 @@ function writeFutureMissionsToDom() {
     cardImage.appendChild(cardImageURL);
     // APPEND CARD TITLE
     cardImage.appendChild(cardTitleSpan);
-
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
     cardImage.appendChild(cardTitleSpanLink);
@@ -214,7 +213,10 @@ function writeFutureMissionsToDom() {
       }
     });
     // Modal Listener
-    cardImage.addEventListener("click", function () {
+    cardImage.children[0].addEventListener("click", function () {
+      writeModal(futureMissions.results[i].id);
+    });
+    cardImage.children[1].addEventListener("click", function () {
       writeModal(futureMissions.results[i].id);
     });
     //-------------------------------------------
@@ -294,6 +296,9 @@ function addFavoriteToList() {
       cardImage.appendChild(cardTitleSpan);
 
       cardTitleSpan.appendChild(cardTitleTextNode);
+      cardTitleSpan.setAttribute(
+        "data-launch-id", futureMissions.results[i].id
+      );
       // append a icon div
       cardImage.appendChild(cardTitleSpanLink);
       // append text to trigger icon to i element
@@ -316,7 +321,10 @@ function addFavoriteToList() {
           storeUniqueDataID();
         }
       });
-
+      cardTitleSpan.addEventListener("click", function () {
+        //console.log(this.getAttribute("data-launch-id"));
+        writeModal(this.getAttribute("data-launch-id"));
+      });
       // append card content div to CARD
       card.appendChild(cardContentDiv);
 
@@ -571,24 +579,28 @@ function writeModal(LaunchID) {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      mLaunch = data;
-      mTitle = mLaunch.name;
-      mDescription = mLaunch.mission.description;
-      mImage = mLaunch.image;
-      // var mWeather =
-      mTimeDiff = moment(mLaunch.window_start).fromNow();
-      document.getElementById("modal-title").innerText = mTitle;
-      document.getElementById("modal-desc").innerText = mDescription;
-      document.getElementById("modal-img").src = mImage;
-      // document.getElementById("modal-weather").textContent = mWeather;
-      document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-    })
-    .then(function () {
-      Dinstance.open();
-    });
+
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log(data);
+    mLaunch = data;
+    mTitle = mLaunch.name;
+    mDescription = mLaunch.mission.description;
+    mImage = mLaunch.image;
+    mCompany = mLaunch.launch_service_provider.name;
+    // var mWeather =
+    mTimeDiff = moment(
+      mLaunch.window_start
+    ).fromNow();
+    document.getElementById("modal-title").innerText = mTitle;
+    document.getElementById("modal-company").innerText = mCompany;
+    document.getElementById("modal-desc").innerText = mDescription;
+    document.getElementById("modal-img").src = mImage;
+    // document.getElementById("modal-weather").textContent = mWeather;
+    document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+  }).then(function () {
+    Dinstance.open();
+  });
 }
+
