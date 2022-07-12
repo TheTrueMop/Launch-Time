@@ -183,6 +183,10 @@ function writeFutureMissionsToDom() {
 
     cardTitleSpan.appendChild(cardTitleTextNode);
     // append a icon div
+    cardTitleSpan.setAttribute(
+      "data-index-id",
+      i
+    );
     cardImage.appendChild(cardTitleSpanLink);
     // append text to trigger icon to i element
     cardTitleSpanLink.appendChild(addFavoriteIcon);
