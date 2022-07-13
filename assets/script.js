@@ -486,14 +486,7 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
-  // Modal listeners
-  for (i = 0; i < results.length; i++) {
-    document.getElementById("search" + results[i].id).addEventListener("click", function () {
-      realid = this.id.split("search")[1];
-      writeModal(realid);
-    });
-  }
-  // Modal listeners
+
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -608,7 +601,7 @@ function handleFilterSearch(event) {
 
 // Btn Event listener
 var findLaunch = document.querySelector("#findBtn");
-findLaunch.addEventListener("click", handleFilterSearch);
+//findLaunch.addEventListener("click", handleFilterSearch);
 
 // Dawson Code BELOW this line -----------------------------------------------------------------------
 
