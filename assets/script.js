@@ -99,7 +99,7 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 99; i++) {
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -404,7 +404,7 @@ function handleLaunchTimers() {
     hours = Math.floor(hours);
     days = Math.floor(days);
 
-    if (Math.sign(minutes) !== 1) {
+    if (minutes < -2) {
       var theTime = "00:00:00:00";
       timerDivReady[i].style.color = "green";
     } else {
