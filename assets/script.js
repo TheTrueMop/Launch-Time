@@ -153,7 +153,7 @@ function writeFutureMissionsToDom() {
     var cardContentDiv = document.createElement("div");
     cardContentDiv.classList.add("card-content");
     var cardContentDivTextNode = document.createTextNode(
-      futureMissions.results[i].status.name
+      futureMissions.results[i].launch_service_provider.name
     );
     cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -241,7 +241,7 @@ function addFavoriteToList() {
   var clearFuture = document.querySelector(".clearFuture");
   clearFuture.replaceChildren();
 
-  for (i = 0; i < futureMissions['results'].length; i++) {
+  for (i = 0; i < futureMissions["results"].length; i++) {
     if (savedMissions.includes(futureMissions.results[i].id)) {
       var column = document.createElement("div");
       column.classList.add("col");
@@ -285,7 +285,7 @@ function addFavoriteToList() {
       var cardContentDiv = document.createElement("div");
       cardContentDiv.classList.add("card-content");
       var cardContentDivTextNode = document.createTextNode(
-        futureMissions.results[i].status.name
+        futureMissions.results[i].window_start
       );
       cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -373,12 +373,11 @@ function handleLaunchTimers() {
     // console.log("DATID: ");
     // console.log(dataAttrTimerId);
   }
-  for (i = 0; i < futureMissions['results'].length; i++) {
+  for (i = 0; i < futureMissions["results"].length; i++) {
     dataAttrTimerId = doneTimerArea[i].dataset.indexTimerid;
     var now = moment().utc();
     var end = moment(launchTimerArray[dataAttrTimerId]).utc();
     var secondsUntilLaunch = end.diff(now);
-
 
     var theDuration = moment.duration(secondsUntilLaunch);
 
@@ -406,6 +405,7 @@ function handleLaunchTimers() {
 
     if (Math.sign(minutes) !== 1) {
       var theTime = "00:00:00:00";
+      timerDivReady[i].style.color = "green";
     } else {
       // console.log(secondsUntilLaunch);
 
@@ -414,23 +414,16 @@ function handleLaunchTimers() {
       hours = hours.toString().padStart(2, "0");
       days = days.toString().padStart(2, "0");
 
-
-
       var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
       // console.log(theTime);
 
       //console.log("i break: " + i);
-
     }
     timerDivReady[i].innerHTML = theTime;
   }
-
-
 }
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
-
-
 
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
@@ -546,8 +539,8 @@ function launchComponent(launchInfo) {
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  )}</span></p>
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
@@ -555,8 +548,9 @@ function launchComponent(launchInfo) {
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
-    }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
@@ -610,6 +604,7 @@ function writeModal(LaunchID) {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
+
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
@@ -644,4 +639,5 @@ function writeModal(LaunchID) {
   }).then(function () {
     Dinstance.open();
   });
+
 }
