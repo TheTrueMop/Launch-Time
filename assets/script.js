@@ -102,7 +102,7 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < futureMissions['results'].length ; i++) {
+  for (let i = 0; i < futureMissions["results"].length; i++) {
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -369,7 +369,7 @@ function handleLaunchTimers() {
 
   var doneTimerArea = document.querySelectorAll("div[data-index-timerid]");
   // console.log(doneTimerArea);
-  
+
   for (i = 0; i < futureMissions["results"].length; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
 
@@ -521,7 +521,7 @@ function displayLaunches(response) {
   // Modal listeners
 
   for (i = 0; i < results.length; i++) {
-    searchHTML += getWeather(results[i]);
+    searchHTML += getWeather(results[i], i);
   }
 }
 
@@ -550,7 +550,7 @@ function launchComponent(launchInfo) {
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
-        <p>Weather: <span class="weather"></span></p>
+        <p><span class="weather"></span></p>
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
       <div class="col s1 m1 customIcon">
@@ -569,12 +569,10 @@ searchInfo();
 
 // Key for weatherAPI
 
-
 var apiKey = "KHQGVDYABWH96K8PCEMPGJET6";
 
-
 // Function to extract weather
-function getWeather(launchInfo) {
+function getWeather(launchInfo, index) {
   var date = launchInfo.net;
   var futuredate = moment(date).format("X");
   var lat = launchInfo.pad.latitude;
@@ -587,8 +585,15 @@ function getWeather(launchInfo) {
     weatherElement.textContent = response.data.days[0].description;
   }
 
-  var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-  axios.get(apiUrlWeather).then(showWeather);
+  if (index < 1) {
+    var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+    axios
+      .get(apiUrlWeather)
+      .then(showWeather)
+      .catch(function (error) {
+        console.log("API request limit reached");
+      });
+  }
 }
 
 // Function to filter date, cities and companies
