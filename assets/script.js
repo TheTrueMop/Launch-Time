@@ -563,25 +563,25 @@ searchInfo();
 
 // Key for weatherAPI
 
-// var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-// // Function to extract weather
-// function getWeather(launchInfo) {
-//   var date = launchInfo.net;
-//   var futuredate = moment(date).format("X");
-//   var lat = launchInfo.pad.latitude;
-//   var lon = launchInfo.pad.longitude;
+// Function to extract weather
+function getWeather(launchInfo) {
+  var date = launchInfo.net;
+  var futuredate = moment(date).format("X");
+  var lat = launchInfo.pad.latitude;
+  var lon = launchInfo.pad.longitude;
 
-//   function showWeather(response) {
-//     var weatherElement = document.querySelector(
-//       "#search" + launchInfo.id + " .weather"
-//     );
-//     weatherElement.textContent = response.data.days[0].description;
-//   }
+  function showWeather(response) {
+    var weatherElement = document.querySelector(
+      "#search" + launchInfo.id + " .weather"
+    );
+    weatherElement.textContent = response.data.days[0].description;
+  }
 
-//   var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-//   axios.get(apiUrlWeather).then(showWeather);
-// }
+  var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+  axios.get(apiUrlWeather).then(showWeather);
+}
 
 // Function to filter date, cities and companies
 function handleFilterSearch(event) {
@@ -604,40 +604,43 @@ function writeModal(LaunchID) {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
-
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    //console.log(data);
-    mLaunch = data;
-    mTitle = mLaunch.name;
-    mDescription = mLaunch.mission.description;
-    mImage = mLaunch.image;
-    mCompany = mLaunch.launch_service_provider.name;
-    mTimeDiff = moment(
-      mLaunch.window_start
-    ).add(5, "hours").fromNow();
-    mProgram = mLaunch.launch_service_provider.country_code;
-    mType = mLaunch.mission.type;
-    mProgramDesc = mLaunch.launch_service_provider.description;
-    mSucc = mLaunch.launch_service_provider.successful_launches;
-    mFail = mLaunch.launch_service_provider.failed_launches;
-    // Launch Location
-    mLocation = mLaunch.pad.location.name;
-    document.getElementById("modal-img").src = mImage;
-    document.getElementById("modal-title").innerText = mTitle;
-    document.getElementById("modal-program").innerText = "Location: " + mProgram;
-    document.getElementById("modal-type").innerText = "Type: " + mType;
-    document.getElementById("modal-desc").innerText = mDescription;
-    document.getElementById("modal-company").innerText = mCompany;
-    document.getElementById("modal-location").innerText = "Location: " + mLocation;
-    document.getElementById("modal-programDesc").innerText = mProgramDesc;
-    document.getElementById("modal-succLaunches").innerText = "Successful Launches: " + mSucc;
-    document.getElementById("modal-failLaunches").innerText = "Failed Launches:     " + mFail;
-    // document.getElementById("modal-weather").textContent = mWeather;
-    document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-  }).then(function () {
-    Dinstance.open();
-  });
-
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      //console.log(data);
+      mLaunch = data;
+      mTitle = mLaunch.name;
+      mDescription = mLaunch.mission.description;
+      mImage = mLaunch.image;
+      mCompany = mLaunch.launch_service_provider.name;
+      mTimeDiff = moment(mLaunch.window_start).add(5, "hours").fromNow();
+      mProgram = mLaunch.launch_service_provider.country_code;
+      mType = mLaunch.mission.type;
+      mProgramDesc = mLaunch.launch_service_provider.description;
+      mSucc = mLaunch.launch_service_provider.successful_launches;
+      mFail = mLaunch.launch_service_provider.failed_launches;
+      // Launch Location
+      mLocation = mLaunch.pad.location.name;
+      document.getElementById("modal-img").src = mImage;
+      document.getElementById("modal-title").innerText = mTitle;
+      document.getElementById("modal-program").innerText =
+        "Location: " + mProgram;
+      document.getElementById("modal-type").innerText = "Type: " + mType;
+      document.getElementById("modal-desc").innerText = mDescription;
+      document.getElementById("modal-company").innerText = mCompany;
+      document.getElementById("modal-location").innerText =
+        "Location: " + mLocation;
+      document.getElementById("modal-programDesc").innerText = mProgramDesc;
+      document.getElementById("modal-succLaunches").innerText =
+        "Successful Launches: " + mSucc;
+      document.getElementById("modal-failLaunches").innerText =
+        "Failed Launches:     " + mFail;
+      // document.getElementById("modal-weather").textContent = mWeather;
+      document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+    })
+    .then(function () {
+      Dinstance.open();
+    });
 }
