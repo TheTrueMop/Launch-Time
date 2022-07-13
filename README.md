@@ -32,7 +32,7 @@ This project was intended to reinforce HTML CSS and Javascript knowledge, while 
     - <img src="./assets/readmeImages/upcomingPage.png" style="width: 500px"/>
 
 - Click the missions title and/or image to open a MODAL with lots more information about the mission, agency, rocket... all kinds of stuff!
-    - <img src="./assets/readmeImages/ModalPopUp.png" style="width: 500px"/>
+- <img src="./assets/readmeImages/ModalPopUp.png" style="width: 500px"/>
 
 - You can use the "+" sign button to ADD this card to the SAVED MISSIONS page if you'd like to keep track of it.
 
