@@ -241,7 +241,7 @@ function addFavoriteToList() {
   var clearFuture = document.querySelector(".clearFuture");
   clearFuture.replaceChildren();
 
-  for (i = 0; i < futureMissions['results'].length; i++) {
+  for (i = 0; i < futureMissions["results"].length; i++) {
     if (savedMissions.includes(futureMissions.results[i].id)) {
       var column = document.createElement("div");
       column.classList.add("col");
@@ -373,12 +373,11 @@ function handleLaunchTimers() {
     // console.log("DATID: ");
     // console.log(dataAttrTimerId);
   }
-  for (i = 0; i < futureMissions['results'].length; i++) {
+  for (i = 0; i < futureMissions["results"].length; i++) {
     dataAttrTimerId = doneTimerArea[i].dataset.indexTimerid;
     var now = moment().utc();
     var end = moment(launchTimerArray[dataAttrTimerId]).utc();
     var secondsUntilLaunch = end.diff(now);
-
 
     var theDuration = moment.duration(secondsUntilLaunch);
 
@@ -415,23 +414,16 @@ function handleLaunchTimers() {
       hours = hours.toString().padStart(2, "0");
       days = days.toString().padStart(2, "0");
 
-
-
       var theTime = days + ":" + hours + ":" + minutes + ":" + seconds;
       // console.log(theTime);
 
       //console.log("i break: " + i);
-
     }
     timerDivReady[i].innerHTML = theTime;
   }
-
-
 }
 
 // Dustin's Code ABOVE this line---------------------------------------------------------------------
-
-
 
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
@@ -487,14 +479,6 @@ function displayLaunches(response) {
     searchHTML += launchComponent(results[i]);
   }
   document.querySelector("#searchresults").innerHTML = searchHTML;
-  // Modal listeners
-  for (i = 0; i < results.length; i++) {
-    document.getElementById("search" + results[i].id).addEventListener("click", function () {
-      realid = this.id.split("search")[1];
-      writeModal(realid);
-    });
-  }
-  // Modal listeners
   var saveLaunchHandler = function (event) {
     event.preventDefault();
     var el = event.target;
@@ -554,8 +538,8 @@ function launchComponent(launchInfo) {
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
-    "dddd, MMMM Do YYYY, h:mm:ss a"
-  )}</span></p>
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
       <div class="col s5 m3 customWeather">
@@ -563,8 +547,9 @@ function launchComponent(launchInfo) {
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${launchInfo.id
-    }" class="material-icons">
+        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+          launchInfo.id
+        }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
         </i></a>
       </div>
@@ -618,38 +603,43 @@ function writeModal(LaunchID) {
     method: "GET", //GET is the default.
     credentials: "same-origin", // include, *same-origin, omit
     redirect: "follow", // manual, *follow, error
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    //console.log(data);
-    mLaunch = data;
-    mTitle = mLaunch.name;
-    mDescription = mLaunch.mission.description;
-    mImage = mLaunch.image;
-    mCompany = mLaunch.launch_service_provider.name;
-    mTimeDiff = moment(
-      mLaunch.window_start
-    ).fromNow();
-    mProgram = mLaunch.launch_service_provider.country_code;
-    mType = mLaunch.mission.type;
-    mProgramDesc = mLaunch.launch_service_provider.description;
-    mSucc = mLaunch.launch_service_provider.successful_launches;
-    mFail = mLaunch.launch_service_provider.failed_launches;
-    // Launch Location
-    mLocation = mLaunch.pad.location.name;
-    document.getElementById("modal-img").src = mImage;
-    document.getElementById("modal-title").innerText = mTitle;
-    document.getElementById("modal-program").innerText = "Location: " + mProgram;
-    document.getElementById("modal-type").innerText = "Type: " + mType;
-    document.getElementById("modal-desc").innerText = mDescription;
-    document.getElementById("modal-company").innerText = mCompany;
-    document.getElementById("modal-location").innerText = "Location: " + mLocation;
-    document.getElementById("modal-programDesc").innerText = mProgramDesc;
-    document.getElementById("modal-succLaunches").innerText = "Successful Launches: " + mSucc;
-    document.getElementById("modal-failLaunches").innerText = "Failed Launches:     " + mFail;
-    // document.getElementById("modal-weather").textContent = mWeather;
-    document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-  }).then(function () {
-    Dinstance.open();
-  });
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      //console.log(data);
+      mLaunch = data;
+      mTitle = mLaunch.name;
+      mDescription = mLaunch.mission.description;
+      mImage = mLaunch.image;
+      mCompany = mLaunch.launch_service_provider.name;
+      mTimeDiff = moment(mLaunch.window_start).fromNow();
+      mProgram = mLaunch.launch_service_provider.country_code;
+      mType = mLaunch.mission.type;
+      mProgramDesc = mLaunch.launch_service_provider.description;
+      mSucc = mLaunch.launch_service_provider.successful_launches;
+      mFail = mLaunch.launch_service_provider.failed_launches;
+      // Launch Location
+      mLocation = mLaunch.pad.location.name;
+      document.getElementById("modal-img").src = mImage;
+      document.getElementById("modal-title").innerText = mTitle;
+      document.getElementById("modal-program").innerText =
+        "Location: " + mProgram;
+      document.getElementById("modal-type").innerText = "Type: " + mType;
+      document.getElementById("modal-desc").innerText = mDescription;
+      document.getElementById("modal-company").innerText = mCompany;
+      document.getElementById("modal-location").innerText =
+        "Location: " + mLocation;
+      document.getElementById("modal-programDesc").innerText = mProgramDesc;
+      document.getElementById("modal-succLaunches").innerText =
+        "Successful Launches: " + mSucc;
+      document.getElementById("modal-failLaunches").innerText =
+        "Failed Launches:     " + mFail;
+      // document.getElementById("modal-weather").textContent = mWeather;
+      document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+    })
+    .then(function () {
+      Dinstance.open();
+    });
 }
