@@ -285,7 +285,7 @@ function addFavoriteToList() {
       var cardContentDiv = document.createElement("div");
       cardContentDiv.classList.add("card-content");
       var cardContentDivTextNode = document.createTextNode(
-        futureMissions.results[i].status.name
+        futureMissions.results[i].window_start
       );
       cardContentDiv.appendChild(cardContentDivTextNode);
 
