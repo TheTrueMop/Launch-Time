@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
 }
+
 :root {
   --primary-color: #062c43;
   --secondary-color: #054569;
@@ -39,14 +40,17 @@ header {
 .tabs .tab a {
   color: white;
 }
+
 .tabs .indicator {
   background-color: var(--primary-text-color) !important;
 }
+
 .tabs .tab a:hover,
 .tabs .tab a.active {
   background-color: var(--secondary-text-color) !important;
   color: var(--primary-color) !important;
 }
+
 a {
   background-color: var(--primary-color);
   color: white;
@@ -58,18 +62,22 @@ a {
 .sidenav {
   padding: 25px !important;
 }
+
 input {
   font-family: "Raleway", sans-serif;
   width: 60%;
 }
+
 .date-inputs div {
   color: var(--primary-color);
   text-align: center;
 }
+
 .btn {
   background-color: var(--primary-color);
 }
-.sidenav li > a.btn:hover {
+
+.sidenav li>a.btn:hover {
   background-color: var(--secondary-color);
 }
 
@@ -77,9 +85,11 @@ input {
 .select-wrapper input.select-dropdown {
   display: none;
 }
+
 .caret {
   display: none;
 }
+
 #cities,
 #company {
   display: block;
@@ -89,33 +99,45 @@ input {
 .customIconBigScreen {
   text-align: right;
 }
+
 .customCard {
   text-align: left;
   background-color: rgb(0, 0, 0, 0.6);
   border-radius: 10px;
   padding: 10px;
 }
+
 .customCard p {
   line-height: 30px;
   font-size: 15px;
   color: var(--secondary-text-color);
 }
+
 .card-image {
   cursor: pointer;
+
 }
+
+.card .card-image img {
+  border-radius: 11px;
+}
+
 .agencyImg {
   border-radius: 20px;
   width: 100%;
   height: 160px;
 }
+
 .saveBtn {
   background-color: red;
   border-radius: 50%;
   padding: 15px 5px 3px 5px;
 }
+
 .saveBtn:hover {
   opacity: 70%;
 }
+
 .findBtn {
   background-color: var(--primary-text-color);
   padding: 10px;
@@ -124,10 +146,12 @@ input {
   color: var(--primary-color);
   transition-delay: 2ms;
 }
+
 .findBtn:hover {
   background-color: var(--secondary-text-color);
   color: var(--primary-color);
 }
+
 .moreBtn {
   padding: 4px 8px 4px 8px;
   font-family: "Raleway", sans-serif;
@@ -136,6 +160,7 @@ input {
   border: none;
   margin-top: 10px;
 }
+
 .moreBtn:hover {
   background-color: var(--third-color);
   color: var(--primary-text-color);
@@ -149,16 +174,20 @@ input {
   margin-bottom: 10px;
   color: green;
 }
+
 #nextFiveLaunchesList,
 #lastFiveLaunchesList {
   margin-bottom: 10px;
 }
+
 .agencyImage img {
   max-height: 170px;
   min-height: 170px;
+
 }
+
 .agencyImage {
-  background-color: black !important;
+  background-color: var(--primary-color) !important;
 }
 
 .card-content {
@@ -167,14 +196,25 @@ input {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
-.card{
+
+.card {
   border-radius: 11px;
+  border: 1px solid var(--primary-color);
 
 }
+
+.card .card-title {
+  font-size: small;
+  font-weight: bolder;
+}
+
 .card .card-reveal {
   background-color: black;
 }
+
+
 .timer-div {
   text-align: center;
   font-family: 'Orbitron', sans-serif;
@@ -184,7 +224,11 @@ input {
   border-top: 2px solid white;
   border-style: ridge;
   border-bottom: none;
-  
+
+}
+
+.customCard {
+  background-color: var(--primary-color);
 }
 
 /* Dawson CSS */
@@ -192,10 +236,12 @@ input {
   background-color: var(--primary-color);
   color: var(--primary-text-color);
 }
+
 .modal .modal-footer {
   background-color: var(--secondary-color);
   color: var(--secondary-text-color);
 }
+
 .modal .modal-footer a {
   color: var(--secondary-text-color);
 }
@@ -206,24 +252,43 @@ input {
   .agencyImg {
     display: none;
   }
+
   .customCard p {
     font-size: 14px;
     line-height: 25px;
   }
+
   .customIconSearch {
     text-align: right;
     margin-bottom: 15px;
   }
+
   .row {
     margin-bottom: 2px;
   }
+
   .row .col {
     margin-bottom: 15px;
   }
+
   .navText {
     display: none;
   }
+
   .modal {
     text-size-adjust: 60%;
   }
+}
+
+video {
+  position: fixed;
+  z-index: -99;
+  width: 110vw;
+  /* height: 100%; */
+  margin: 0;
+  padding: 0;
+}
+
+iframe {
+  border: none;
 }
