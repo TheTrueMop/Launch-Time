@@ -595,7 +595,7 @@ function handleFilterSearch(event) {
 
 // Btn Event listener
 var findLaunch = document.querySelector("#findBtn");
-//findLaunch.addEventListener("click", handleFilterSearch);
+findLaunch.addEventListener("click", handleFilterSearch);
 
 // Dawson Code BELOW this line -----------------------------------------------------------------------
 
