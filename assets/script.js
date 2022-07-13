@@ -99,7 +99,7 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < futureMissions['results'].length ; i++) {
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -373,7 +373,7 @@ function handleLaunchTimers() {
     // console.log("DATID: ");
     // console.log(dataAttrTimerId);
   }
-  for (i = 0; i < futureMissions["results"].length; i++) {
+  for (i = 0; i < timerDivReady.length; i++) {
     dataAttrTimerId = doneTimerArea[i].dataset.indexTimerid;
     var now = moment().utc();
     var end = moment(launchTimerArray[dataAttrTimerId]).utc();
@@ -429,219 +429,219 @@ function handleLaunchTimers() {
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
 
-// Global Variables
-var startDate = moment();
-var endDate = moment().add(365, "days");
-var companies = "";
-var cities = "";
+// // Global Variables
+// var startDate = moment();
+// var endDate = moment().add(365, "days");
+// var companies = "";
+// var cities = "";
 
-// Function to filter data by cities, companies and date
+// // Function to filter data by cities, companies and date
 
-function displayLaunches(response) {
-  var results = response.data.results;
+// function displayLaunches(response) {
+//   var results = response.data.results;
 
-  var citiesOptions = [
-    ...new Set(
-      results.map(function (launch) {
-        return launch.pad.location.name;
-      })
-    ),
-  ];
-  var companyOptions = [
-    ...new Set(
-      results.map(function (launch) {
-        return launch.launch_service_provider.name;
-      })
-    ),
-  ];
-  var citiesFilterHTML = `<option value="" disabled selected></option>`;
-  for (var i = 0; i < citiesOptions.length; i++) {
-    citiesFilterHTML += `<option>${citiesOptions[i]}</option>`;
-  }
+//   var citiesOptions = [
+//     ...new Set(
+//       results.map(function (launch) {
+//         return launch.pad.location.name;
+//       })
+//     ),
+//   ];
+//   var companyOptions = [
+//     ...new Set(
+//       results.map(function (launch) {
+//         return launch.launch_service_provider.name;
+//       })
+//     ),
+//   ];
+//   var citiesFilterHTML = `<option value="" disabled selected></option>`;
+//   for (var i = 0; i < citiesOptions.length; i++) {
+//     citiesFilterHTML += `<option>${citiesOptions[i]}</option>`;
+//   }
 
-  var companyFilterHTML = `<option value="" disabled selected></option>`;
-  for (var i = 0; i < companyOptions.length; i++) {
-    companyFilterHTML += `<option>${companyOptions[i]}</option>`;
-  }
-  document.querySelector("#company").innerHTML = companyFilterHTML;
-  document.querySelector("#cities").innerHTML = citiesFilterHTML;
+//   var companyFilterHTML = `<option value="" disabled selected></option>`;
+//   for (var i = 0; i < companyOptions.length; i++) {
+//     companyFilterHTML += `<option>${companyOptions[i]}</option>`;
+//   }
+//   document.querySelector("#company").innerHTML = companyFilterHTML;
+//   document.querySelector("#cities").innerHTML = citiesFilterHTML;
 
-  results = results.filter(function (launch) {
-    return (
-      (companies == launch.launch_service_provider.name || companies == "") &&
-      (cities == launch.pad.location.name || cities == "") &&
-      (startDate == "" ||
-        moment(launch.net).isBetween(moment(startDate), moment(endDate)))
-    );
-  });
+//   results = results.filter(function (launch) {
+//     return (
+//       (companies == launch.launch_service_provider.name || companies == "") &&
+//       (cities == launch.pad.location.name || cities == "") &&
+//       (startDate == "" ||
+//         moment(launch.net).isBetween(moment(startDate), moment(endDate)))
+//     );
+//   });
 
-  var searchHTML = ``;
-  for (i = 0; i < results.length; i++) {
-    searchHTML += launchComponent(results[i]);
-  }
-  document.querySelector("#searchresults").innerHTML = searchHTML;
+//   var searchHTML = ``;
+//   for (i = 0; i < results.length; i++) {
+//     searchHTML += launchComponent(results[i]);
+//   }
+//   document.querySelector("#searchresults").innerHTML = searchHTML;
 
-  var saveLaunchHandler = function (event) {
-    event.preventDefault();
-    var el = event.target;
-    var dataId = el.dataset.id;
-    var index = savedMissions.indexOf(dataId);
+//   var saveLaunchHandler = function (event) {
+//     event.preventDefault();
+//     var el = event.target;
+//     var dataId = el.dataset.id;
+//     var index = savedMissions.indexOf(dataId);
 
-    if (index == -1) {
-      savedMissions.push(dataId);
-      el.textContent = "remove";
-    } else {
-      el.textContent = "add";
-      savedMissions.splice(index, 1);
-    }
-    localStorage.setItem("savedMissions", savedMissions);
-    addFavoriteToList();
-  };
-  var elements = document.querySelectorAll(".search-add-favorite i");
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].addEventListener("click", saveLaunchHandler);
-  }
+//     if (index == -1) {
+//       savedMissions.push(dataId);
+//       el.textContent = "remove";
+//     } else {
+//       el.textContent = "add";
+//       savedMissions.splice(index, 1);
+//     }
+//     localStorage.setItem("savedMissions", savedMissions);
+//     addFavoriteToList();
+//   };
+//   var elements = document.querySelectorAll(".search-add-favorite i");
+//   for (var i = 0; i < elements.length; i++) {
+//     elements[i].addEventListener("click", saveLaunchHandler);
+//   }
 
-  // Modal listeners
-  var makeHandler = function displayModalHandler(id) {
-    return function () {
-      writeModal(id);
-    };
-  };
+//   // Modal listeners
+//   var makeHandler = function displayModalHandler(id) {
+//     return function () {
+//       writeModal(id);
+//     };
+//   };
 
-  for (i = 0; i < results.length; i++) {
-    var id = results[i].id;
-    document
-      .querySelector("#search" + id + " .moreBtn")
-      .addEventListener("click", makeHandler(id));
-  }
-  // Modal listeners
+//   for (i = 0; i < results.length; i++) {
+//     var id = results[i].id;
+//     document
+//       .querySelector("#search" + id + " .moreBtn")
+//       .addEventListener("click", makeHandler(id));
+//   }
+//   // Modal listeners
 
-  for (i = 0; i < results.length; i++) {
-    searchHTML += getWeather(results[i]);
-  }
-}
+//   for (i = 0; i < results.length; i++) {
+//     searchHTML += getWeather(results[i]);
+//   }
+// }
 
-// Function to search launches inside API
-function searchInfo() {
-  var apiURL =
-    "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=100";
-  axios.get(apiURL).then(displayLaunches);
-}
+// // Function to search launches inside API
+// function searchInfo() {
+//   var apiURL =
+//     "https://lldev.thespacedevs.com/2.2.0/launch/upcoming/?limit=100";
+//   axios.get(apiURL).then(displayLaunches);
+// }
 
-//   Function to insert last launches as HTML in Search Launches page
-function launchComponent(launchInfo) {
-  var searchHTML = `  
-    <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
-      <div class="col s0 m3">
-        <img class="agencyImg" src="${launchInfo.image}" /> 
-      </div>
-      <div class="col s6 m4">
-        <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
-        <p>Name: <span>${launchInfo.name}</span></p>
-        <p>Date: <span>${moment(launchInfo.net).format(
-          "dddd, MMMM Do YYYY, h:mm:ss a"
-        )}</span></p>
-        <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
-      </div>
-      <div class="col s5 m3 customWeather">
-        <p>Weather: <span class="weather"></span></p>
-        <button class="moreBtn" id="moreBtn">More</button>
-      </div>  
-      <div class="col s1 m1 customIcon">
-        <a class="saveBtn search-add-favorite"><i data-id="${
-          launchInfo.id
-        }" class="material-icons">
-        ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
-        </i></a>
-      </div>
-    </div>`;
-  return searchHTML;
-}
+// //   Function to insert last launches as HTML in Search Launches page
+// function launchComponent(launchInfo) {
+//   var searchHTML = `  
+//     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
+//       <div class="col s0 m3">
+//         <img class="agencyImg" src="${launchInfo.image}" /> 
+//       </div>
+//       <div class="col s6 m4">
+//         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
+//         <p>Name: <span>${launchInfo.name}</span></p>
+//         <p>Date: <span>${moment(launchInfo.net).format(
+//           "dddd, MMMM Do YYYY, h:mm:ss a"
+//         )}</span></p>
+//         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
+//       </div>
+//       <div class="col s5 m3 customWeather">
+//         <p>Weather: <span class="weather"></span></p>
+//         <button class="moreBtn" id="moreBtn">More</button>
+//       </div>  
+//       <div class="col s1 m1 customIcon">
+//         <a class="saveBtn search-add-favorite"><i data-id="${
+//           launchInfo.id
+//         }" class="material-icons">
+//         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
+//         </i></a>
+//       </div>
+//     </div>`;
+//   return searchHTML;
+// }
 
-// Call function to show upcoming launches
-searchInfo();
+// // Call function to show upcoming launches
+// searchInfo();
 
-// Key for weatherAPI
+// // Key for weatherAPI
 
-var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+// var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-// Function to extract weather
-function getWeather(launchInfo) {
-  var date = launchInfo.net;
-  var futuredate = moment(date).format("X");
-  var lat = launchInfo.pad.latitude;
-  var lon = launchInfo.pad.longitude;
+// // Function to extract weather
+// function getWeather(launchInfo) {
+//   var date = launchInfo.net;
+//   var futuredate = moment(date).format("X");
+//   var lat = launchInfo.pad.latitude;
+//   var lon = launchInfo.pad.longitude;
 
-  function showWeather(response) {
-    var weatherElement = document.querySelector(
-      "#search" + launchInfo.id + " .weather"
-    );
-    weatherElement.textContent = response.data.days[0].description;
-  }
+//   function showWeather(response) {
+//     var weatherElement = document.querySelector(
+//       "#search" + launchInfo.id + " .weather"
+//     );
+//     weatherElement.textContent = response.data.days[0].description;
+//   }
 
-  var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-  axios.get(apiUrlWeather).then(showWeather);
-}
+//   var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+//   axios.get(apiUrlWeather).then(showWeather);
+// }
 
-// Function to filter date, cities and companies
-function handleFilterSearch(event) {
-  event.preventDefault();
-  startDate = document.querySelector("#startDate").value;
-  endDate = document.querySelector("#endDate").value;
-  cities = document.querySelector("#cities").value;
-  companies = document.querySelector("#company").value;
-  searchInfo();
-}
+// // Function to filter date, cities and companies
+// function handleFilterSearch(event) {
+//   event.preventDefault();
+//   startDate = document.querySelector("#startDate").value;
+//   endDate = document.querySelector("#endDate").value;
+//   cities = document.querySelector("#cities").value;
+//   companies = document.querySelector("#company").value;
+//   searchInfo();
+// }
 
-// Btn Event listener
-var findLaunch = document.querySelector("#findBtn");
-findLaunch.addEventListener("click", handleFilterSearch);
+// // Btn Event listener
+// var findLaunch = document.querySelector("#findBtn");
+// findLaunch.addEventListener("click", handleFilterSearch);
 
-// Dawson Code BELOW this line -----------------------------------------------------------------------
+// // Dawson Code BELOW this line -----------------------------------------------------------------------
 
-function writeModal(LaunchID) {
-  fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
-    method: "GET", //GET is the default.
-    credentials: "same-origin", // include, *same-origin, omit
-    redirect: "follow", // manual, *follow, error
-  })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      //console.log(data);
-      mLaunch = data;
-      mTitle = mLaunch.name;
-      mDescription = mLaunch.mission.description;
-      mImage = mLaunch.image;
-      mCompany = mLaunch.launch_service_provider.name;
-      mTimeDiff = moment(mLaunch.window_start).add(5, "hours").fromNow();
-      mProgram = mLaunch.launch_service_provider.country_code;
-      mType = mLaunch.mission.type;
-      mProgramDesc = mLaunch.launch_service_provider.description;
-      mSucc = mLaunch.launch_service_provider.successful_launches;
-      mFail = mLaunch.launch_service_provider.failed_launches;
-      // Launch Location
-      mLocation = mLaunch.pad.location.name;
-      document.getElementById("modal-img").src = mImage;
-      document.getElementById("modal-title").innerText = mTitle;
-      document.getElementById("modal-program").innerText =
-        "Location: " + mProgram;
-      document.getElementById("modal-type").innerText = "Type: " + mType;
-      document.getElementById("modal-desc").innerText = mDescription;
-      document.getElementById("modal-company").innerText = mCompany;
-      document.getElementById("modal-location").innerText =
-        "Location: " + mLocation;
-      document.getElementById("modal-programDesc").innerText = mProgramDesc;
-      document.getElementById("modal-succLaunches").innerText =
-        "Successful Launches: " + mSucc;
-      document.getElementById("modal-failLaunches").innerText =
-        "Failed Launches:     " + mFail;
-      // document.getElementById("modal-weather").textContent = mWeather;
-      document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
-    })
-    .then(function () {
-      Dinstance.open();
-    });
-}
+// function writeModal(LaunchID) {
+//   fetch(`https://lldev.thespacedevs.com/2.2.0/launch/${LaunchID}`, {
+//     method: "GET", //GET is the default.
+//     credentials: "same-origin", // include, *same-origin, omit
+//     redirect: "follow", // manual, *follow, error
+//   })
+//     .then(function (response) {
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       //console.log(data);
+//       mLaunch = data;
+//       mTitle = mLaunch.name;
+//       mDescription = mLaunch.mission.description;
+//       mImage = mLaunch.image;
+//       mCompany = mLaunch.launch_service_provider.name;
+//       mTimeDiff = moment(mLaunch.window_start).add(5, "hours").fromNow();
+//       mProgram = mLaunch.launch_service_provider.country_code;
+//       mType = mLaunch.mission.type;
+//       mProgramDesc = mLaunch.launch_service_provider.description;
+//       mSucc = mLaunch.launch_service_provider.successful_launches;
+//       mFail = mLaunch.launch_service_provider.failed_launches;
+//       // Launch Location
+//       mLocation = mLaunch.pad.location.name;
+//       document.getElementById("modal-img").src = mImage;
+//       document.getElementById("modal-title").innerText = mTitle;
+//       document.getElementById("modal-program").innerText =
+//         "Location: " + mProgram;
+//       document.getElementById("modal-type").innerText = "Type: " + mType;
+//       document.getElementById("modal-desc").innerText = mDescription;
+//       document.getElementById("modal-company").innerText = mCompany;
+//       document.getElementById("modal-location").innerText =
+//         "Location: " + mLocation;
+//       document.getElementById("modal-programDesc").innerText = mProgramDesc;
+//       document.getElementById("modal-succLaunches").innerText =
+//         "Successful Launches: " + mSucc;
+//       document.getElementById("modal-failLaunches").innerText =
+//         "Failed Launches:     " + mFail;
+//       // document.getElementById("modal-weather").textContent = mWeather;
+//       document.getElementById("modal-tMinus").textContent = "T- " + mTimeDiff;
+//     })
+//     .then(function () {
+//       Dinstance.open();
+//     });
+// }
