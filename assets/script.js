@@ -53,6 +53,9 @@ var mTimeDiff;
 var mWeather;
 var mProgram;
 
+function imagePath(imgstr) {
+  return imgstr !== null ? imgstr : "images/default.png";
+}
 function storeUniqueDataID() {
   if (savedMissions.indexOf(dataID) > -1) {
     savedMissions.splice(savedMissions.indexOf(dataID), 1);
@@ -119,7 +122,7 @@ function writeFutureMissionsToDom() {
     // CARD IMG TAG
     var cardImageURL = document.createElement("img");
 
-    cardImageURL.src = futureMissions.results[i].image;
+    cardImageURL.src = imagePath(futureMissions.results[i].image);
     // CREATE CARD TITLE SPAN
     var cardTitleSpan = document.createElement("span");
     cardTitleSpan.classList.add("card-title");
@@ -257,7 +260,7 @@ function addFavoriteToList() {
       cardImage.classList.add("card-image");
       // CARD IMG TAG
       var cardImageURL = document.createElement("img");
-      cardImageURL.src = futureMissions.results[i].image;
+      cardImageURL.src = imagePath(futureMissions.results[i].image);
       // CREATE CARD TITLE SPAN
       var cardTitleSpan = document.createElement("span");
       cardTitleSpan.classList.add("card-title");
@@ -530,10 +533,12 @@ function searchInfo() {
 
 //   Function to insert last launches as HTML in Search Launches page
 function launchComponent(launchInfo) {
+  var img = imagePath(launchInfo.image);
+
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
       <div class="col s0 m3">
-        <img class="agencyImg" src="${launchInfo.image}" /> 
+        <img class="agencyImg" src="${img}" /> 
       </div>
       <div class="col s6 m4">
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
@@ -613,7 +618,7 @@ function writeModal(LaunchID) {
       mLaunch = data;
       mTitle = mLaunch.name;
       mDescription = mLaunch.mission.description;
-      mImage = mLaunch.image;
+      mImage = imagePath(mLaunch.image);
       mCompany = mLaunch.launch_service_provider.name;
       mTimeDiff = moment(mLaunch.window_start).add(5, "hours").fromNow();
       mProgram = mLaunch.launch_service_provider.country_code;
