@@ -404,11 +404,12 @@ function handleLaunchTimers() {
     hours = Math.floor(hours);
     days = Math.floor(days);
 
-    if (minutes < -2) {
+    if (minutes < -1) {
       var theTime = "00:00:00:00";
       timerDivReady[i].style.color = "green";
     } else {
       // console.log(secondsUntilLaunch);
+      timerDivReady[i].style.color = "white";
 
       seconds = seconds.toString().padStart(2, "0");
       minutes = minutes.toString().padStart(2, "0");
@@ -577,25 +578,25 @@ searchInfo();
 
 // Key for weatherAPI
 
-// var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
 
-// // Function to extract weather
-// function getWeather(launchInfo) {
-//   var date = launchInfo.net;
-//   var futuredate = moment(date).format("X");
-//   var lat = launchInfo.pad.latitude;
-//   var lon = launchInfo.pad.longitude;
+// Function to extract weather
+function getWeather(launchInfo) {
+  var date = launchInfo.net;
+  var futuredate = moment(date).format("X");
+  var lat = launchInfo.pad.latitude;
+  var lon = launchInfo.pad.longitude;
 
-//   function showWeather(response) {
-//     var weatherElement = document.querySelector(
-//       "#search" + launchInfo.id + " .weather"
-//     );
-//     weatherElement.textContent = response.data.days[0].description;
-//   }
+  function showWeather(response) {
+    var weatherElement = document.querySelector(
+      "#search" + launchInfo.id + " .weather"
+    );
+    weatherElement.textContent = response.data.days[0].description;
+  }
 
-//   var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
-//   axios.get(apiUrlWeather).then(showWeather);
-// }
+  var apiUrlWeather = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${futuredate}?unitGroup=us&include=days&key=${apiKey}&contentType=json`;
+  axios.get(apiUrlWeather).then(showWeather);
+}
 
 // Function to filter date, cities and companies
 function handleFilterSearch(event) {
