@@ -547,7 +547,7 @@ function launchComponent(launchInfo) {
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
       <div class="col s1 m1 customIcon">
-        <a href="#" class="saveBtn search-add-favorite"><i data-id="${
+        <a class="saveBtn search-add-favorite"><i data-id="${
           launchInfo.id
         }" class="material-icons">
         ${savedMissions.indexOf(launchInfo.id) == -1 ? "add" : "remove"}
