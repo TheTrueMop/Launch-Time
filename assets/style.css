@@ -163,13 +163,27 @@ input {
 .card-content {
   color: white;
   opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card{
+  border-radius: 11px;
+
 }
 .card .card-reveal {
   background-color: black;
 }
 .timer-div {
-  color: white;
   text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  padding: 0;
+  border-radius: 22px;
+  border-top: 2px solid white;
+  border-style: ridge;
+  border-bottom: none;
+  
 }
 
 /* Dawson CSS */

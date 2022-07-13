@@ -153,7 +153,7 @@ function writeFutureMissionsToDom() {
     var cardContentDiv = document.createElement("div");
     cardContentDiv.classList.add("card-content");
     var cardContentDivTextNode = document.createTextNode(
-      futureMissions.results[i].status.name
+      futureMissions.results[i].launch_service_provider.name
     );
     cardContentDiv.appendChild(cardContentDivTextNode);
 
@@ -406,6 +406,7 @@ function handleLaunchTimers() {
 
     if (Math.sign(minutes) !== 1) {
       var theTime = "00:00:00:00";
+      timerDivReady[i].style.color = "green";
     } else {
       // console.log(secondsUntilLaunch);
 
