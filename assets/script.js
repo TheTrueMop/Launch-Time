@@ -621,7 +621,7 @@ function writeModal(LaunchID) {
     mCompany = mLaunch.launch_service_provider.name;
     mTimeDiff = moment(
       mLaunch.window_start
-    ).fromNow();
+    ).add(5, "hours").fromNow();
     mProgram = mLaunch.launch_service_provider.country_code;
     mType = mLaunch.mission.type;
     mProgramDesc = mLaunch.launch_service_provider.description;
