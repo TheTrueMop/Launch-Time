@@ -99,7 +99,7 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < 99; i++) {
+  for (let i = 0; i < 100; i++) {
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -359,14 +359,14 @@ function addFavoriteToList() {
 }
 
 var launchTimesInSeconds = [];
-
+var dataAttrTimerId;
 function handleLaunchTimers() {
   var timerDivReady = document.querySelectorAll(".timer-div");
-  timerDivReady.textContent = " ";
+  timerDivReady.textContent = "";
 
   var doneTimerArea = document.querySelectorAll("div[data-index-timerid]");
   // console.log(doneTimerArea);
-  var dataAttrTimerId;
+  
   for (i = 0; i < futureMissions["results"].length; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
 
