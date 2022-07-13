@@ -569,7 +569,9 @@ searchInfo();
 
 // Key for weatherAPI
 
-var apiKey = "PNESG34KAB5WUHJM8RRPRXZY7";
+
+var apiKey = "KHQGVDYABWH96K8PCEMPGJET6";
+
 
 // Function to extract weather
 function getWeather(launchInfo) {
