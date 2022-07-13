@@ -102,7 +102,7 @@ getFutureLaunches();
 function writeFutureMissionsToDom() {
   var clearNextFive = document.getElementById("nextFiveLaunchesList");
   clearNextFive.replaceChildren();
-  for (let i = 0; i < 99; i++) {
+  for (let i = 0; i < futureMissions['results'].length ; i++) {
     launchTimerArray.push();
     // console.log(futureMissions.results[i].window_start);
     // CARD CONTAINER
@@ -137,7 +137,7 @@ function writeFutureMissionsToDom() {
     cardTitleSpanLink.classList.add("halfway-fab");
     cardTitleSpanLink.classList.add("waves-effect");
     cardTitleSpanLink.classList.add("waves-light");
-    cardTitleSpanLink.classList.add("red");
+    cardTitleSpanLink.classList.add("blue", "darken-4");
 
     var addFavoriteIcon = document.createElement("i");
     addFavoriteIcon.classList.add("material-icons");
@@ -275,7 +275,7 @@ function addFavoriteToList() {
       cardTitleSpanLink.classList.add("halfway-fab");
       cardTitleSpanLink.classList.add("waves-effect");
       cardTitleSpanLink.classList.add("waves-light");
-      cardTitleSpanLink.classList.add("red");
+      cardTitleSpanLink.classList.add("blue", "darken-4");
 
       // CREATE MATERIALIZE ICON AREA
       var addFavoriteIcon = document.createElement("i");
@@ -362,21 +362,21 @@ function addFavoriteToList() {
 }
 
 var launchTimesInSeconds = [];
-
+var dataAttrTimerId;
 function handleLaunchTimers() {
   var timerDivReady = document.querySelectorAll(".timer-div");
-  timerDivReady.textContent = " ";
+  timerDivReady.textContent = "";
 
   var doneTimerArea = document.querySelectorAll("div[data-index-timerid]");
   // console.log(doneTimerArea);
-  var dataAttrTimerId;
+  
   for (i = 0; i < futureMissions["results"].length; i++) {
     launchTimerArray.push(futureMissions.results[i].net);
 
     // console.log("DATID: ");
     // console.log(dataAttrTimerId);
   }
-  for (i = 0; i < futureMissions["results"].length; i++) {
+  for (i = 0; i < timerDivReady.length; i++) {
     dataAttrTimerId = doneTimerArea[i].dataset.indexTimerid;
     var now = moment().utc();
     var end = moment(launchTimerArray[dataAttrTimerId]).utc();
@@ -406,11 +406,12 @@ function handleLaunchTimers() {
     hours = Math.floor(hours);
     days = Math.floor(days);
 
-    if (minutes < -2) {
+    if (minutes < -1) {
       var theTime = "00:00:00:00";
       timerDivReady[i].style.color = "green";
     } else {
       // console.log(secondsUntilLaunch);
+      timerDivReady[i].style.color = "white";
 
       seconds = seconds.toString().padStart(2, "0");
       minutes = minutes.toString().padStart(2, "0");
@@ -431,7 +432,7 @@ function handleLaunchTimers() {
 // -----> Search Lauches page (Itzel's)
 // Itzel's Code BELOW this line -----------------------------------------------------------------------
 
-// Global Variables
+// // Global Variables
 var startDate = moment();
 var endDate = moment().add(365, "days");
 var companies = "";
@@ -568,7 +569,9 @@ searchInfo();
 
 // Key for weatherAPI
 
+
 var apiKey = "KHQGVDYABWH96K8PCEMPGJET6";
+
 
 // Function to extract weather
 function getWeather(launchInfo) {
