@@ -538,10 +538,10 @@ function launchComponent(launchInfo) {
 
   var searchHTML = `  
     <div id="search${launchInfo.id}" class="row customCard valign-wrapper">
-      <div class="col s0 m3">
+      <div class="col s0 m3 l2">
         <img class="agencyImg" src="${img}" /> 
       </div>
-      <div class="col s6 m4">
+      <div class="col s6 m4 l5">
         <p>Company: <span>${launchInfo.launch_service_provider.name}</span></p>
         <p>Name: <span>${launchInfo.name}</span></p>
         <p>Date: <span>${moment(launchInfo.net).format(
@@ -549,11 +549,11 @@ function launchComponent(launchInfo) {
         )}</span></p>
         <p>Location: <span>${launchInfo.pad.location.name}</span></p>  
       </div>
-      <div class="col s5 m3 customWeather">
+      <div class="col s3 m3 l3 customWeather">
         <p><span class="weather"></span></p>
         <button class="moreBtn" id="moreBtn">More</button>
       </div>  
-      <div class="col s1 m1 customIcon">
+      <div class="col s2 m1 l1 customIcon">
         <a class="saveBtn search-add-favorite"><i data-id="${
           launchInfo.id
         }" class="material-icons">
